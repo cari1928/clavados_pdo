@@ -1,6 +1,6 @@
 <?php
 include ('cl_web.class.php');
-$templates = $web->templatesEngine();
+$templates = $web->templateEngine();
 
 $templates->assign('title', 'SISCACLAO');
 $templates->assign('headerTitle1', 'Tablero de Clavados Individual');
