@@ -1,0 +1,164 @@
+#contenedor {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+body{
+    margin: 0px;
+    padding: 0px;
+    font-family: Helvetica, Arial, sans-serif;
+    background-color: #dfe0e6;
+  	line-height: 1.5em;
+    padding-right: 50px;
+    padding-left: 50px;
+    padding-bottom: 50px;
+}
+
+h1 {
+	font-size: 2.3em;
+	line-height: 1.3em;
+	margin: 15px 0;
+	text-align: center;
+	font-weight: 300;
+}
+
+p {
+	margin: 0 0 1.5em 0;
+}
+
+#main-header {
+	background: #d2ded1;
+	color: black;
+	height: 170px;
+  position: relative;
+}
+
+#main-header img{
+  width: 125px;
+}
+
+#logo-header {
+	text-align: center;
+	padding: 15px 0 0 20px;
+	text-decoration: none;
+}
+
+#logo-header:hover {
+		color: #0b76a6;
+	}
+
+#left-image img{
+  margin-top: 20px;
+  margin-left: 5%;
+  position: absolute;
+}
+
+#right-image img{
+  margin-top: -90px;
+  margin-left: 85%;
+  position: absolute;
+}
+
+#logo-header .site-name {
+  margin-top: 50px;
+	display: block;
+	font-weight: 700;
+	font-size: 3.2em;
+}
+
+#logo-header .site-desc {
+  padding: 10px;
+	display: block;
+	font-weight: 300;
+	font-size: 1.8em;
+}
+
+#tableResult{
+  margin-top: 20px;
+}
+
+.califBar{
+  width: 70%;
+  height: 150px;
+  border-collapse:collapse;
+  margin-top: 23%;
+  margin-left: 15%;
+}
+
+#interTable{
+  margin-top: 45px;
+}
+
+footer{
+  margin-top: -40px;
+  height: 170px;
+  background-color: #fff8c4;
+  position: relative;
+  padding: 0;
+}
+
+footer .text{
+  background-color: #fff8c4;
+  width: 70%;
+  padding-top: 30px;
+  text-align: center;
+  position: absolute;
+  left: 220px;
+  top: 0;
+}
+
+footer .image{
+  background-color: #fff8c4;
+  padding-top: 30px;
+  margin-top: 110px;
+  margin-left: 5%;
+}
+
+#formulario{
+	width: 50%;
+	margin: auto;
+}
+
+/*esto es para el formulario al agregar un usuario empleado*/
+#divAdmin{
+	background-position: center;
+	width: 25%;
+	margin: auto;
+	margin-bottom: 50px;
+	background-color: #f0f0f0;
+}
+#titulo{
+	font-size: 25px;
+	font-style: normal;
+	color: black;
+}
+#input{
+	width: 250px;
+	height: 35px;
+	margin:-10px 35px;
+	padding: 0px 10px;
+	color: black;
+	text-align: center;
+}
+#boton{
+	padding: 10px 50px;
+  	font-size: 16x;
+	cursor: pointer;
+	text-align: center;
+	color: #000;
+	background-color:gray;
+	border:none;
+	border-radius: 10px;
+	box-shadow:0px 2px #000;
+}
+#boton:hover{background-color:blue;}
+/*---------------------------------------------------------*/
+#error{
+	font-size: 50px;
+	background-color: red;
+	margin-top: 500px;
+	background-image: url("../images/calavera.jpg");
+	background-repeat: no-repeat;
+	background-position: center;
+}
