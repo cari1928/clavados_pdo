@@ -1,3 +1,4 @@
+/*para el body*/
 #contenedor {
     display: block;
     margin-left: auto;
@@ -27,12 +28,13 @@ p {
 	margin: 0 0 1.5em 0;
 }
 
-#main-header {
+/*Para el header*/
+/*#main-header {
 	background: #d2ded1;
 	color: black;
 	height: 170px;
   position: relative;
-}
+}*/
 
 #main-header img{
   width: 125px;
@@ -44,9 +46,9 @@ p {
 	text-decoration: none;
 }
 
-#logo-header:hover {
+/*#logo-header:hover {
 		color: #0b76a6;
-	}
+}*/
 
 #left-image img{
   margin-top: 20px;
@@ -60,7 +62,7 @@ p {
   position: absolute;
 }
 
-#logo-header .site-name {
+/*#logo-header .site-name {
   margin-top: 50px;
 	display: block;
 	font-weight: 700;
@@ -72,7 +74,7 @@ p {
 	display: block;
 	font-weight: 300;
 	font-size: 1.8em;
-}
+}*/
 
 #tableResult{
   margin-top: 20px;
@@ -90,13 +92,13 @@ p {
   margin-top: 45px;
 }
 
-footer{
+/*footer{
   margin-top: -40px;
   height: 170px;
   background-color: #fff8c4;
   position: relative;
   padding: 0;
-}
+}*/
 
 footer .text{
   background-color: #fff8c4;

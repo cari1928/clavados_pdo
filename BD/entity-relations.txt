@@ -1,0 +1,15 @@
+Entidades
+  ->Usuario (cve_usuario*, pass, nombre_real, nombre_usuario, estado)
+  ->Roles (cve_rol*, descripcion)
+  ->Nacionalidad (cve_nacionalidad*, descripcion)
+  ->Clavadista (cve_clavadista*, nombre, apellidos)
+  ->Clavado (cve_clavado*, dificulad, )
+  ->Genero (cve_genero*, descripcion)
+  ->TipoClavado (cve_tipoclavado*, descripcion)
+
+Relaciones
+  ->Posee (Usuario, Rol) n - 1
+  ->Nace (Clavadista, Nacionalidad, Genero) n - 1 - 1
+  ->Tiene (Clavado, TipoClavado) n - 1
+  ->Califica (UsuarioJuez, Clavadista, TipoClavado) 1 - n - n
+  ->
