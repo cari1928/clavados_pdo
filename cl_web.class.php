@@ -5,6 +5,9 @@
   Version:  0.1
   Fecha:    2016-09-22
 */
+
+session_start(); //iniciaos la sesión
+
 include('configs/configuration.php');
 require_once('lib/smarty/Smarty.class.php'); // 2016-09-27_SMARTY_INICIOS
 
@@ -185,6 +188,20 @@ class CLweb {
       return $template->fetch('query2html2.component.html'); //Esto es hermoso T-T
     }
 
+//------------------------------------------------------------------------------
+     function checarAcceso($rol=null){
+       $data = $_SESSION;
+       if(isset($data['validado'])){
+         if($data['validado']){
+
+         }else{
+           header('Location: login.php');
+         }
+       }else{
+         header('Location: login.php');
+       }
+     }
+
 } //END OF THE CLASS
 //-----------------------------------------------------------------------------------------------
 
@@ -192,9 +209,9 @@ class CLweb {
   // foreach (glob("controllers/*.php") as $nombre_fichero) {
   //     include($nombre_fichero);
   // }
- // include('controllers/clientes.php'); ////2016-09-29 En lo que se arregla el foreach de arriba
- // include('controllers/estados.php');
- // include('controllers/tipos.php');
+
+ include('controllers/login.php');
+ include('controllers/registro.php');
 
 $web = new CLweb;
 $web->conexion();

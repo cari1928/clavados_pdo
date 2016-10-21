@@ -3,24 +3,28 @@
     <div class="main row">
 
       <aside class="col-xs-12">
-        <form action="">
+        {if $msg != ""}
+          <div class="form-group"> {$msg} </div>
+        {/if}
+        <form action="registro.php" method="post">
           <div class="form-group">
-            <label id="lab-user" >Nombre de Usuario</label>
-            <input class="form-control" type="text" name="nomUser">
+            <label id="lab-user">Nombre de Usuario</label>
+            <input class="form-control" required type="text" name="nombre_usuario">
           </div>
           <div class="form-group">
             <label>Password</label>
-            <input class="form-control" type="text" name="pwd">
+            <input class="form-control" required type="password" name="pass">
           </div>
           <div class="form-group">
             <label>Verificar password</label>
-            <input class="form-control" type="text" name="Vpwd">
+            <input class="form-control" required type="password" name="vpass">
           </div>
           <div class="form-group">
-            <label>Nombre Real</label>
-            <input class="form-control" type="text" name="name_us">
+            <label>Nombre Completo</label>
+            <input class="form-control" required type="text" name="nombre_real">
           </div>
-          <button class="btn btn-primary">Registrar</button>
+          <input type="hidden" name="cve_rol" value="J">
+          <input type="submit" class="btn btn-primary" value="Registrar">
         </form>
       </aside>
 
