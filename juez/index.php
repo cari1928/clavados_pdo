@@ -4,6 +4,8 @@ $templates = $web->templateEngine();
 $smarty = new Smarty();
 $templates->setTemplateDir('../templates/juez/');
 
+$web->checarAcceso();
+
 $templates->assign('title', 'Juez');
 $templates->assign('headerTitle1', 'Prueba de Clavados Individual');
 $templates->assign('headerTitle2', 'SISCACLAO');

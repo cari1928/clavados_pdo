@@ -195,10 +195,10 @@ class CLweb {
          if($data['validado']){
 
          }else{
-           header('Location: login.php');
+           header('Location: ../login.php');
          }
        }else{
-         header('Location: login.php');
+         header('Location: ../login.php');
        }
      }
 

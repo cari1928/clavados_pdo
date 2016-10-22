@@ -3,6 +3,8 @@ include ('../cl_web.class.php');
 $templates = $web->templateEngine();
 $templates->setTemplateDir('../templates/admin/');
 
+$web->checarAcceso();
+
 $templates->assign('title', 'Dificultad');
 $templates->assign('headerTitle1', 'SISCACLAO');
 $templates->assign('headerTitle2', 'Asignación de Nivel de Dificultad');

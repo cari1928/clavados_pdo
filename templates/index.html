@@ -2,23 +2,23 @@
 <div class="container-fluid">
 	<div class="main row">
 
-		<article class="col-xs-12">
+		<article class="col-xs-4 col-md-push-4">
+			{if $msg != ""}
+				<div class="form-group"> {$msg} </div>
+			{/if}
 			<h1 class="text-center">Login</h1>
 			<form action="login.php" method="post">
-				<table align="center">
-					<tr>
-						<td><strong>Usuario: </strong></td>
-						<td><input type="text" name="datos[usuario]"></td>
-					</tr>
-					<tr>
-						<td><strong> Contraseña: </strong></td>
-						<td><input type="Contrasenia" name="datos[contrasena]"></td>
-					</tr>
-					<tr>
-						<td><input type="submit" name="datos[enviar]" style="background-color:#d3dee3"></td>
-						<td><input type="reset" name="datos[limpiar]" style="background-color:#d3dee3"></td>
-					</tr>
-				</table>
+				<div class="form-group">
+					<label id="lab-user">Usuario:</label>
+					<input class="form-control"< name="nombre_usuario" required>
+				</div>
+				<div class="form-group">
+					<label id="lab-password"> Contraseña: </label >
+					<input class="form-control" type="password" name="pass" required>
+				</div>
+				<input class="btn btn-primary" type="submit">
+				<input class="btn btn-default" type="reset" name="limpiar">
+				<a class="btn btn-link" href="registro.php">Regístrate</a>
 			</form>
 		</article>
 
