@@ -2,7 +2,7 @@
 <div class="container-fluid">
 	<div class="main row">
 
-		<article class="col-xs-4 col-md-push-4">
+		<article class="col-xs-12 col-md-4 col-md-push-4">
 			{if $msg != ""}
 				<div class="form-group"> {$msg} </div>
 			{/if}
@@ -16,6 +16,7 @@
 					<label id="lab-password"> Contraseña: </label >
 					<input class="form-control" type="password" name="pass" required>
 				</div>
+				<input type="hidden" name="estado" value="1">
 				<input class="btn btn-primary" type="submit">
 				<input class="btn btn-default" type="reset" name="limpiar">
 				<a class="btn btn-link" href="registro.php">Regístrate</a>

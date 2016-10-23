@@ -8,6 +8,7 @@ $web->checarAcceso();
 $templates->assign('title', 'Dificultad');
 $templates->assign('headerTitle1', 'SISCACLAO');
 $templates->assign('headerTitle2', 'Asignación de Nivel de Dificultad');
+$templates->assign('nombre_usuario', $_SESSION['nombre_usuario']);
 $templates->display('index.html');
 // if (isset($_SESSION['logueado']))
 // {

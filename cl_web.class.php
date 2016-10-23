@@ -104,6 +104,7 @@ class CLweb {
   ****************************************************************************/
   //2016-10-10
   function update($datos, $id, $condition=null){
+    // die(var_dump($datos));
     $nombresColumnas = $this->getNombresColumnas($datos); //2016-10-11
     $columnas = $this->getColumnas($datos, 'update'); //2016-10-11
 
@@ -120,6 +121,7 @@ class CLweb {
     }
 
     $sql = "update ".$this->getTabla()." set ".$columnas.$where;
+    // die($sql);
     $stmt = $this->conn->prepare($sql);
     for ($i=0; $i < sizeof($nombresColumnas); $i++) //2016-10-11
       $stmt->bindParam(':'.$nombresColumnas[$i], $datos[$nombresColumnas[$i]]); //2016-10-11
@@ -201,6 +203,18 @@ class CLweb {
          header('Location: ../login.php');
        }
      }
+
+//------------------------------------------------------------------------------
+  function indexMessages($msg=""){
+    $templates = $this->templateEngine();
+    $templates->assign('title', 'SISCACLAO');
+    $templates->assign('headerTitle1', 'SISCACLAO');
+    $templates->assign('headerTitle2', 'Sistema de Calificación de Clavados Individuales');
+    $templates->assign('route1', 'images/logo_header.png');
+    $templates->assign('route2', 'images/rio2016.png');
+    $templates->assign('msg', '<div class="alert alert-danger" role="alert">'.$msg.'</div>');
+    $templates->display('index.html');
+  }
 
 } //END OF THE CLASS
 //-----------------------------------------------------------------------------------------------
