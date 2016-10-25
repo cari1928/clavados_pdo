@@ -39,4 +39,28 @@
         </div>
       </div>
     </div>
+
+    <nav class="navbar navbar-default navbar-static-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toogle collapse" data-toogle="collapse" data-target="#navbar-1">
+            <span class="sr-only"> Menu </span> <!-- Para que en cualquier dispositivo de lectura se muestre un menú -->
+            <span class="icon-bar"></span> <!-- Barritas del botón -->
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a href="index.php" class="navbar-brand"><span class="glyphicon glyphicon-tint"></span></a>
+        </div>
+        <div class="collapse navbar-collapse" id="navbar-1">
+          <ul class="nav navbar-nav">
+            <li><a href="usuarios.php">Usuarios</a></li>
+            <li><a href="index.php">Carga Datos</a></li>
+          </ul>
+
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="../login.php?action=logout">Logout</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
 	</header><!-- / #main-header -->

@@ -226,6 +226,7 @@ class CLweb {
 
  include('controllers/login.php');
  include('controllers/registro.php');
+ include('controllers/admin/usuarios.php');
 
 $web = new CLweb;
 $web->conexion();

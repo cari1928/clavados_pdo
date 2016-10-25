@@ -17,26 +17,51 @@
 </head>
 <body id="contenedor">
 	<header>
-    <div class="container"> <!-- container para centrar las cosas -->
-        <div class="row">
-          <div class="col-xs-12 col-sm-12 col-md-1">
-            <div id="left-image" align="center">
-              <img src="{$route1}" alt="No encontrado">
-            </div>
+    <div class="container-fluid"> <!-- container para centrar las cosas -->
+      <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-1">
+          <div id="left-image" align="center">
+            <img src="{$route1}" alt="No encontrado">
           </div>
+        </div>
 
-          <div class="col-xs-12 col-sm-12 col-md-10">
-            <div id="logo-header">
-        			<a href="index.php"><span class="site-name">{$headerTitle1}</span></a>
-        			<span class="site-desc">{$headerTitle2}</span>
-        		</div>
-          </div>
+        <div class="col-xs-12 col-sm-12 col-md-10">
+          <div id="logo-header">
+      			<a href="index.php"><span class="site-name">{$headerTitle1}</span></a>
+      			<span class="site-desc">{$headerTitle2}</span>
+      		</div>
+        </div>
 
-          <div class="col-xs-12 col-sm-12 col-md-1">
-            <div id="right-image" align="center">
-              <img src="{$route2}" alt="No encontrado">
-            </div>
+        <div class="col-xs-12 col-sm-12 col-md-1">
+          <div id="right-image" align="center">
+            <img src="{$route2}" alt="No encontrado">
           </div>
         </div>
       </div>
+    </div>
+
+    <nav class="navbar navbar-default navbar-static-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toogle collapse" data-toogle="collapse" data-target="#navbar-1">
+            <span class="sr-only"> Menu </span> <!-- Para que en cualquier dispositivo de lectura se muestre un menú -->
+            <span class="icon-bar"></span> <!-- Barritas del botón -->
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a href="index.php" class="navbar-brand"><span class="glyphicon glyphicon-tint"></span></a>
+        </div>
+        <div class="collapse navbar-collapse" id="navbar-1">
+          <ul class="nav navbar-nav">
+            <li><a href="calificaciones.php">Calificaciones</a></li>
+            <li><a href="internet.php">Resultados</a></li>
+          </ul>
+
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="registro.php">Registro</a></li>
+            <li><a href="index.php">Login</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
 	</header><!-- / #main-header -->
