@@ -80,6 +80,34 @@ class CLweb {
   }
 
   /****************************************************************************
+    METHOD TO GET HTML CODE OF A CUSTOM TABLE
+    @param   Array columns Table's Header
+    @param   Array    rows Table's Body
+    @param   String  route Additional route for the table template
+  ****************************************************************************/
+  //2016-10-04, regresa un arreglo asociativo, es para hacer combo
+  function showTable($columns, $rows, $route=""){
+    $idList = $this->getArrayID($rows, 'Usuario');
+
+    $template = $this->templateEngine();
+    $template->assign('columns', $columns); //2016-10-06
+    $template->assign('rows', $rows);
+    $template->assign('idList', $idList);
+    //fecth: procesa la plantilla, el resultado lo guarda en una variable
+    return $template->fetch($route.'table.component.html'); //Esto es hermoso T-T
+  }
+
+//---------------------------------------------------------------------------------
+  function getArrayID($array, $field){
+    $temp = array();
+    for ($i=0; $i < count($array); $i++) {
+      array_push($temp, $array[$i][$field]);
+    }
+    // die(var_dump($temp));
+    return $temp;
+  }
+
+  /****************************************************************************
     METHOD TO STABLISH THE MANIPULATED TABLE
     @param   array $tabla CONTAINS THE COLUMNS OF GET OR POST TABLE
   ****************************************************************************/
