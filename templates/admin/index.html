@@ -1,31 +1,55 @@
 {include file="header.html"}
-<div class="container">
-  <aside>
-    <div class="row">
-        <div class="col-xs-12 col-sm-8 col-md-9 col-lg-9">
-          <h3> <small>Administrador</small> {$nombre_usuario}</h3>
-        </div>
+<div class="container-fluid">
+    <div class="main row">
+        <nav class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-md-push-3">
+            {if isset({$msg})}
+            <div class="form-group"> {$msg} </div>
+            {/if}
+            <form action="index.php" method="post">
 
-        <div class="col-xs-12 col-sm-4 col-md-3 col-lg-3">
-          <a class="btn btn-link" href="../login.php?action=logout">(Logout)</a>
-        </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"> Datos Clavadista </h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <label> Clave Clavadista </label>
+                            <input class="form-control" name="cve_clavadista" placeholder="Clave Clavadista" maxlength="7" required >
+                        </div>
+                        <div class="form-group">
+                            <label> Clavadista </label>
+                            <input class="form-control" name="nombre_completo" placeholder="Nombre" maxlength="40" required>
+                        </div>
+                        <div class="form-group">
+                            <label> Nacionalidad </label> {$cmb_nacionalidad}
+                        </div>
+                        <div class="form-group">
+                            <label> Género </label> {$cmb_genero}
+                        </div>
+                    </div>
+                </div>
 
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"> Datos Clavado </h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <label> Clave Clavado </label>
+                            <input class="form-control" name="cve_clavado" placeholder="Clave Clavado" maxlength="7" required>
+                        </div>
+                        <div class="form-group">
+                            <label> Dificultad </label>
+                            <input class="form-control" name="dificultad" type="number" min="1" max="5" step="0.1" placeholder="Grado Dificultad" required>
+                        </div>
+                        <div class="form-group">
+                            <label> Tipo Clavado </label> {$cmb_tipo_clavado}
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary"> Enviar </button>
+            </form>
+        </nav>
     </div>
-
-    <div class="row">
-      <nav align="center">
-        <div class="col-xs-12 col-sm-12 col-md-12">
-          <form class="form-inline" action='index.php' method='post'>
-            <div class="form-group">
-              <label >Grado de dificultad</label>
-              <input class="form-control" placeholder="Dificultad" name="dificultad">
-            </div>
-            <input class="btn btn-default" type="submit" value="Enviar">
-          </form>
-        </div>
-      </nav>
-    </div>
-  </div>
-
-</aside>
+</div>
 {include file="footer.html"}

@@ -22,12 +22,11 @@
               {else}
                 <h3 class="panel-title"> Formulario - Nuevo Usuario </h3>
               {/if}
-
             </div>
             <div class="panel-body">
               <div class="form-group">
                 <label id="lab-user">Nombre de Usuario</label>
-                <input class="form-control" required type="text" name="nombre_usuario"
+                <input class="form-control" required name="nombre_usuario"
                   {if isset($usuario)}
                     value="{$usuario.nombre_usuario}" readonly="readonly"
                   {/if} >

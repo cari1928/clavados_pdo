@@ -20,8 +20,7 @@
           unset($_POST['vpass']); //destruye el campo
           $web->setTabla("usuario");
           $_POST['pass'] = md5($_POST['pass']);
-          var_dump($_POST);
-          // die();
+
           $web->insert($_POST);
           header('Location: usuarios.php');
         break;

@@ -134,7 +134,6 @@ class CLweb {
     $stmt = $this->conn->prepare($sql);
     for ($i=0; $i < sizeof($nombresColumnas); $i++) {
       $stmt->bindParam(':'.$nombresColumnas[$i], $datos[$nombresColumnas[$i]]);
-      echo $nombresColumnas[$i]." - ".$datos[$nombresColumnas[$i]]."<br>";
     }
     $pdo=$stmt->execute();
 
@@ -158,7 +157,6 @@ class CLweb {
       $stmt = $this->conn->prepare($sql);
       for ($i=0; $i < sizeof($nombresColumnas); $i++) {
         $stmt->bindParam(':'.$nombresColumnas[$i], $datos[$nombresColumnas[$i]]);
-        echo $nombresColumnas[$i]." - ".$datos[$nombresColumnas[$i]];
       }
       $pdo=$stmt->execute();
 

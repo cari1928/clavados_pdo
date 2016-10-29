@@ -10,6 +10,10 @@
       $this->temp = $this->templateEngine();
       $this->temp->setTemplateDir($template);
     }
+//-------------------------------------------------------------------------------------------------
+    function assignTemplate($name, $var){
+      $this->temp->assign($name, $var);
+    }
 
 /*********************************************************************************
     METHOD TO SET A CUSTOM TEMPLATE
@@ -33,7 +37,7 @@
       if(!isset($extra['type']) && !isset($extra['msg'])){ //array = ""
         $this->temp->assign('msg', ""); //sin mensaje
       } else {
-        $msg = assignTypeMessage($extra['type'], $extra['msg']); //crea el mensaje
+        $msg = $this->assignTypeMessage($extra['type'], $extra['msg']); //crea el mensaje
         $this->temp->assign('msg', $msg); //con mensaje
       }
 
