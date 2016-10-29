@@ -1,0 +1,6 @@
+<select class="form-control" name="{$nombDatos[0]}">
+  {foreach $datos as $dato}
+    {*Los espacios son importantes, debe estar pegadito la llave a la variable*}
+    <option value="{$dato[0]}" {if $dato[0] eq $selected} selected {/if}> {$dato[1]}</option>
+  {/foreach}
+</select>

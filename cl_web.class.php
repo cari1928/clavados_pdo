@@ -68,7 +68,7 @@ class CLweb {
     @param   int $selected ELEMNT TO SELECT
   ****************************************************************************/
   //2016-10-04, regresa un arreglo asociativo, es para hacer combo
-  function showList($query, $selected=null){
+  function showList($query, $selected=null, $route=""){
     $datos = $this->getAll($query);
     $nombDatos = array_keys($datos[0]);
     $template = $this->templateEngine();
@@ -76,25 +76,7 @@ class CLweb {
     $template->assign('datos', $datos);
     $template->assign('nombDatos', $nombDatos);
     //fecth: procesa la plantilla, el resultado lo guarda en una variable
-    return $template->fetch('select.component.html'); //Esto es hermoso T-T
-  }
-
-  /****************************************************************************
-    METHOD TO GET HTML CODE OF A CUSTOM TABLE
-    @param   Array columns Table's Header
-    @param   Array    rows Table's Body
-    @param   String  route Additional route for the table template
-  ****************************************************************************/
-  //2016-10-04, regresa un arreglo asociativo, es para hacer combo
-  function showTable($columns, $rows, $route=""){
-    $idList = $this->getArrayID($rows, 'Usuario');
-
-    $template = $this->templateEngine();
-    $template->assign('columns', $columns); //2016-10-06
-    $template->assign('rows', $rows);
-    $template->assign('idList', $idList);
-    //fecth: procesa la plantilla, el resultado lo guarda en una variable
-    return $template->fetch($route.'table.component.html'); //Esto es hermoso T-T
+    return $template->fetch($route.'select.component.html'); //Esto es hermoso T-T
   }
 
 //---------------------------------------------------------------------------------
@@ -133,45 +115,58 @@ class CLweb {
   //2016-10-10
   function update($datos, $id, $condition=null){
     // die(var_dump($datos));
-    $nombresColumnas = $this->getNombresColumnas($datos); //2016-10-11
-    $columnas = $this->getColumnas($datos, 'update'); //2016-10-11
+    $nombresColumnas = $this->getNombresColumnas($datos);
+    $columnas = $this->getColumnas($datos, 'update');
 
     $where = "";
     if(!empty($condition)){
       $where = " where ";
-      $nombresColumnasWhere = array_keys($condition); //2016-10-11
+      $nombresColumnasWhere = array_keys($condition);
       for ($i=0; $i < sizeof($nombresColumnasWhere); $i++) {
-        $where.= $nombresColumnasWhere[$i]; //2016-10-11
-        $where.= '=:'.$nombresColumnasWhere[$i]; //2016-10-11
+        $where.= $nombresColumnasWhere[$i];
+        $where.= '=:'.$nombresColumnasWhere[$i];
         if($i != sizeof($nombresColumnasWhere) - 1)
             $where.= ' and ';
       }
     }
 
     $sql = "update ".$this->getTabla()." set ".$columnas.$where;
-    // die($sql);
     $stmt = $this->conn->prepare($sql);
-    for ($i=0; $i < sizeof($nombresColumnas); $i++) //2016-10-11
-      $stmt->bindParam(':'.$nombresColumnas[$i], $datos[$nombresColumnas[$i]]); //2016-10-11
-    $stmt->execute();
+    for ($i=0; $i < sizeof($nombresColumnas); $i++) {
+      $stmt->bindParam(':'.$nombresColumnas[$i], $datos[$nombresColumnas[$i]]);
+      echo $nombresColumnas[$i]." - ".$datos[$nombresColumnas[$i]]."<br>";
+    }
+    $pdo=$stmt->execute();
+
+    if (!$pdo) {
+      echo "\nPDO::errorInfo():\n";
+      print_r($stmt->errorInfo());
+      die();
+    }
   }
 
   /****************************************************************************
     GENERIC METHOD TO INSERT ANY TABLE
     @param   array  $datos      CONTAINS THE COLUMNS OF GET OR POST
-  ****************************************************************************/    //2016-10-11
+  ****************************************************************************/
     function insert($datos){
       $nombresColumnas = $this->getNombresColumnas($datos);
       $columnas[0] = $this->getColumnas($datos, 'insert');
       $columnas[1] = ":".str_replace(',', ',:', $columnas[0]);
 
       $sql = "insert into ".$this->getTabla()." (".$columnas[0].") values(".$columnas[1].")";
-
       $stmt = $this->conn->prepare($sql);
       for ($i=0; $i < sizeof($nombresColumnas); $i++) {
         $stmt->bindParam(':'.$nombresColumnas[$i], $datos[$nombresColumnas[$i]]);
+        echo $nombresColumnas[$i]." - ".$datos[$nombresColumnas[$i]];
       }
-      $stmt->execute();
+      $pdo=$stmt->execute();
+
+      if (!$pdo) {
+        echo "\nPDO::errorInfo():\n";
+        print_r($stmt->errorInfo());
+        die();
+      }
     }
 
   /****************************************************************************
@@ -179,7 +174,7 @@ class CLweb {
     @param   array    $datos  CONTAINS THE COLUMNS OF THE TABLE
     @param   String   $accion INDICATES THE DML OPERATION: INSERT OR UPDATE
   ****************************************************************************/
-    //2016-10-11
+
     function getColumnas($datos, $accion=null){
       $nombresColumnas = $this->getNombresColumnas($datos);
       $columnas = "";
@@ -199,7 +194,7 @@ class CLweb {
     GENERIC METHOD TO UPDATE ANY TABLE
     @param   array  $datos      CONTAINS THE COLUMNS OF GET OR POST
   ****************************************************************************/
-    //2016-10-11 //regresa los campos separados por comas y por :=
+     //regresa los campos separados por comas y por :=
     function getNombresColumnas($datos){
       return array_keys($datos);
     }

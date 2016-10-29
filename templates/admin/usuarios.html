@@ -1,3 +1,46 @@
 {include file="header.html"}
-  {$table}
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      {$msg}
+      <a href="usuarios.php?action=form_insert" class="btn btn-info">Nuevo <span class="glyphicon glyphicon-plus"></span></a>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Lista de usuarios</h3>
+        </div>
+
+        <div class="panel-body">
+          <table class="table table-condensed table-hover table-responsive">
+
+            <thead class="thead-inverse">
+              <tr>
+                {foreach $columns as $column}
+                <th>{$column}</th>
+                {/foreach}
+                <th>Modificaciones</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {foreach $rows as $row}
+                <tr>
+                  <td>{$row.Usuario}</td>
+                  <td>{$row.Nombre}</td>
+                  <td>{$row.Estado}</td>
+                  <td>{$row.Rol}</td>
+                  <td>
+                    <a href="usuarios.php?action=form_update&nombre_usuario={$row.Usuario}" class="btn btn-success"> <span class="glyphicon glyphicon-pencil"></span></a>
+                    <a href="usuarios.php?action=delete&nombre_usuario={$row.Usuario}" class="btn btn-danger"> <span class="glyphicon glyphicon-minus"></span></a>
+                  </td>
+                </tr>
+              {/foreach}
+            </tbody>
+
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 {include file="footer.html"}
