@@ -9,6 +9,27 @@
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
+CREATE TABLE clavados_pdo.calificacion (
+	ejecucion            int NOT NULL AUTO_INCREMENT,
+	cve_clavadista       varchar(7)  NOT NULL  ,
+	cve_clavado          varchar(7)  NOT NULL  ,
+	nombre_usuario       varchar(10)  NOT NULL  ,
+	calificacion         float(12,0)    ,
+	CONSTRAINT pk_calificacion PRIMARY KEY ( ejecucion, cve_clavadista, cve_clavado, nombre_usuario )
+ );
+
+CREATE INDEX calificacionfk1 ON clavados_pdo.calificacion ( nombre_usuario );
+
+CREATE INDEX calificacionfk3 ON clavados_pdo.calificacion ( cve_clavado );
+
+ALTER TABLE clavados_pdo.calificacion ADD CONSTRAINT calificacionfk2 FOREIGN KEY ( cve_clavadista ) REFERENCES clavados_pdo.clavadista( cve_clavadista ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE clavados_pdo.calificacion ADD CONSTRAINT calificacionfk3 FOREIGN KEY ( cve_clavado ) REFERENCES clavados_pdo.clavado( cve_clavado ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE clavados_pdo.calificacion ADD CONSTRAINT calificacionfk1 FOREIGN KEY ( nombre_usuario ) REFERENCES clavados_pdo.usuario( nombre_usuario ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+
+
 insert into tipo_clavado
     values('HDA', 'Hacia Delante'),
           ('HA', 'Hacia Atrás'),
@@ -18,7 +39,7 @@ insert into tipo_clavado
           ('EQM', 'Desde Equilibrio de Manos');
 
 ALTER TABLE tipo_clavado modify cve_tipo_clavado varchar(3)
-ALTER TABLE tipo_clavado modify tipo_clavado text 
+ALTER TABLE tipo_clavado modify tipo_clavado text
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;

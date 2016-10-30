@@ -248,6 +248,7 @@ class CLweb {
  include('controllers/login.php');
  include('controllers/registro.php');
  include('controllers/admin/usuarios.php');
+ include('controllers/juez/index.php');
 
 $web = new CLweb;
 $web->conexion();

@@ -6,9 +6,11 @@
 				<table class="califBar table table-bordered">
 					<tr bgcolor="#648A60">
 						<td align="center" border="none">NN</td>
-						<td align="center">PPP</td>
-						<td align="center">F</td>
-						<td align="center" colspan="6">Nombre con Apellido</td>
+						{foreach $clavadista as $clv}
+							<td align="center">{$clv.cve_nacionalidad}</td>
+							<td align="center">{$clv.bandera}</td>
+							<td align="center" colspan="6">{$clv.nombre_completo}</td>
+						{/foreach}
 					</tr>
 					<tr bgcolor="#00B04F">
 						<td align="center">C1</td>
@@ -18,8 +20,9 @@
 						<td align="center">C5</td>
 						<td align="center">C6</td>
 						<td align="center">C7</td>
-						<td align="center">Dificultad</td>
-						<td align="center">DD</td>
+						{foreach $clavado $cla}
+							<td align="center">{$cla.dificultad}</td>
+						{/foreach}
 					</tr>
 					<tr>
 						<td align="center" bgcolor="#BF000" colspan="3">Total:</td>
