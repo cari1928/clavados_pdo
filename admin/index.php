@@ -10,6 +10,8 @@ $web->setTemplate('../templates/admin/'); //inicializa template
 $msg = null;
 
 if(isset($_POST['cve_clavadista'])) {
+  die("index.php");
+
   $clavadista = arrayClavadista($_POST);
   $clavado = arrayClavado($_POST);
 
@@ -23,11 +25,11 @@ if(isset($_POST['cve_clavadista'])) {
 }
 
 $cmb_nacionalidad = $web->showList("select cve_nacionalidad, descripcion from nacionalidad");
+$cmb_clavadista = $web->showList("select cve_clavadista,nombre_completo from clavadista");
 $cmb_genero = $web->showList('select * from genero');
-$cmb_tipo_clavado = $web->showList('select * from tipo_clavado');
 $web->assignTemplate('cmb_nacionalidad', $cmb_nacionalidad);
 $web->assignTemplate('cmb_genero', $cmb_genero);
-$web->assignTemplate('cmb_tipo_clavado', $cmb_tipo_clavado);
+$web->assignTemplate('cmb_clavadista', $cmb_clavadista);
 $web->showTemplate(array('title'=>"Administrador",'headerTitle1'=>"SISCACLAO",
       'headerTitle2'=>"Asignación de Niveles de Dificultad",
       'nombre_usuario'=>$_SESSION['nombre_usuario'], 'template'=>"index.html"), $msg);

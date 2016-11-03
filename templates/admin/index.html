@@ -5,13 +5,17 @@
             {if isset({$msg})}
             <div class="form-group"> {$msg} </div>
             {/if}
-            <form action="index.php" method="post">
+            <form id="formChat" action="index.php" method="post">
 
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title"> Datos Clavado </h3>
+                        <h3 class="panel-title"> Datos </h3>
                     </div>
                     <div class="panel-body">
+                      <div class="form-group">
+                          <label> Clavadista </label>
+                          {$cmb_clavadista}
+                      </div>
                         <div class="form-group">
                             <label> Clave Clavado </label>
                             <input class="form-control" name="cve_clavado" placeholder="Clave Clavado" maxlength="7" required>
@@ -20,14 +24,37 @@
                             <label> Dificultad </label>
                             <input class="form-control" name="dificultad" type="number" min="1" max="5" step="0.1" placeholder="Grado Dificultad" required>
                         </div>
-                        <div class="form-group">
-                            <label> Tipo Clavado </label> {$cmb_tipo_clavado}
-                        </div>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary"> Enviar </button>
+                <button id="send" type="submit" class="btn btn-primary"> Enviar </button>
             </form>
         </nav>
     </div>
 </div>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+		<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script>
+
+			$(document).on("ready", function(){
+				registerMessages();
+				// setInterval("loadOldMessages()", 500)
+			});
+
+			var registerMessages = function() {
+				$("#send").on("click", function(e) {
+					e.preventDefault();
+					var frm = $("#formChat").serialize();
+					$.ajax({
+						type: "POST",
+						url: "register.php",
+						data: frm
+					}).done(function (info) {
+						$("#message").val("");
+						// var altura = $("#conversation").prop("scrollHeight");
+						// $("#conversation").scrollTop(altura);
+						console.log(info);
+					});
+				});
+			}
+		</script>
 {include file="footer.html"}
