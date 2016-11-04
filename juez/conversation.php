@@ -14,6 +14,13 @@
   // echo $sql."<br>";
   $result = $web->fetchAll($sql);
 
+  $file = fopen("datos.txt", "w");
+  fwrite($file, "'cve_clavadista'=>".$result[0]['cve_clavadista'] . PHP_EOL);
+  fwrite($file, "'cve_nacionalidad'=>".$result[0]['cve_nacionalidad'] . PHP_EOL);
+  fwrite($file, "'nombre_completo'=>".$result[0]['nombre_completo'] . PHP_EOL);
+  fwrite($file, "'dificultad'=>".$result[0]['dificultad'] . PHP_EOL);
+  fclose($file);
+
   echo '<section>
   	<div id="conversation" class="container-fluid">
   		<div class="row">
