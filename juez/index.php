@@ -7,28 +7,41 @@
   $templates = $web->templateEngine();
   $templates->setTemplateDir('../templates/juez/');
 
-  $clavadista = $web->getAll('select * from clavadista inner join nacionalidad on clavadista.cve_nacionalidad = nacionalidad.cve_nacionalidad');
-  $clavado = $web->getAll('select * from clavado');
+  if(!isset($_POST['cve_clavado'])) {
+    $clavadista = $web->getAll('select * from clavadista inner join nacionalidad on clavadista.cve_nacionalidad = nacionalidad.cve_nacionalidad');
+    $clavado = $web->getAll('select * from clavado');
 
-  $file = fopen("datos.txt", "r");
-  $datos = array();
-  while(!feof($file)) {
-    echo fgets($file). "<pre><br />";
-    $element = explode("=>", fgets($file));
-    var_dump($element);
-    echo "<br>";
-    $datos = array_push($datos, array($element[0]=>$element[1]));
-    var_dump($datos);
+    $file = fopen("datos.txt", "r");
+    $datos = array();
+
+    $element = multiexplode(array("=>",";"), fgets($file));
+    // var_dump($element);
+    for ($i=0; $i < count($element); $i+=2) {
+      $temp = array($element[$i]=>$element[$i+1]);
+      $datos[] = $temp;
+    }
+    fclose($file);
+
+    $templates->assign('title', 'Juez');
+    $templates->assign('headerTitle1', 'Prueba de Clavados Individual');
+    $templates->assign('headerTitle2', 'SISCACLAO');
+    $templates->assign('nombre_usuario', $_SESSION['nombre_usuario']);
+    $templates->assign('clavadista', $clavadista);
+    $templates->assign('clavado', $clavado);
+    $templates->assign('cve_clavadista', $datos[0]['cve_clavadista']);
+    $templates->assign('cve_clavado', $datos[4]['cve_clavado']);
+    $templates->display('index.html');
+
+  } else {
+    echo "existe post";
   }
-  fclose($file);
 
-  die(var_dump($datos));
 
-  $templates->assign('title', 'Juez');
-  $templates->assign('headerTitle1', 'Prueba de Clavados Individual');
-  $templates->assign('headerTitle2', 'SISCACLAO');
-  $templates->assign('nombre_usuario', $_SESSION['nombre_usuario']);
-  $templates->assign('clavadista', $clavadista);
-  $templates->assign('clavado', $clavado);
-  $templates->display('index.html');
+//---------------------------------------------------------------------------------------------
+function multiexplode ($delimiters,$string) {
+    $ready = str_replace($delimiters, $delimiters[0], $string);
+    $launch = explode($delimiters[0], $ready);
+    return  $launch;
+}
+
 ?>

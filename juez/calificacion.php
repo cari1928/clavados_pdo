@@ -17,6 +17,13 @@
     $templates->assign('msg', $web->assignTypeMessage('warning', 'Valor no válido'));
     $templates->display('index.html');
     die();
+  } else {
+    //existe post
+    $web->setTabla('calificacion');
+
+    die(var_dump($_POST));
+
+    $web->insert();
   }
 
   //COMPLEMENTAR POST

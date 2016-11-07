@@ -11,14 +11,14 @@
     inner join nacionalidad on nacionalidad.cve_nacionalidad = clavadista.cve_nacionalidad
     inner join clavado on clavado.cve_clavado = enviarDatos.cve_clavado
   order by idConversation desc;";
-  // echo $sql."<br>";
   $result = $web->fetchAll($sql);
 
   $file = fopen("datos.txt", "w");
-  fwrite($file, "'cve_clavadista'=>".$result[0]['cve_clavadista'] . PHP_EOL);
-  fwrite($file, "'cve_nacionalidad'=>".$result[0]['cve_nacionalidad'] . PHP_EOL);
-  fwrite($file, "'nombre_completo'=>".$result[0]['nombre_completo'] . PHP_EOL);
-  fwrite($file, "'dificultad'=>".$result[0]['dificultad'] . PHP_EOL);
+  fwrite($file, "cve_clavadista=>".$result[0]['cve_clavadista'].";");
+  fwrite($file, "cve_nacionalidad=>".$result[0]['cve_nacionalidad'].";");
+  fwrite($file, "nombre_completo=>".$result[0]['nombre_completo'].";");
+  fwrite($file, "dificultad=>".$result[0]['dificultad'].";" );
+  fwrite($file, "cve_clavado=>".$result[0]['cve_clavado']);
   fclose($file);
 
   echo '<section>
@@ -30,7 +30,7 @@
   					<tr bgcolor="#648A60">
   						<td align="center" border="none">'.$result[0]['cve_clavadista'].'</td>
   							<td align="center">'.$result[0]['cve_nacionalidad'].'</td>
-  							<td align="center"><img href="../images/flags-normal/a1.png" alt="No se encontró"></td>
+  							<td align="center"><img src="../images/flags-normal/'.$result[0]['bandera'].'" alt=":(" width="50"></td>
   							<td align="center" colspan="6">'.$result[0]['nombre_completo'].'</td>
   					</tr>
   					<tr bgcolor="#00B04F">
