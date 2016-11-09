@@ -9,9 +9,7 @@
   $web->setTabla('clavado');
   $web->insert($clavado);
 
-
   $_POST['nombre_usuario'] = $_SESSION['nombre_usuario'];
-
   unset($_POST['dificultad']);
 
   $web->setTabla('enviarDatos');

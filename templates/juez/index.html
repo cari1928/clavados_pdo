@@ -25,6 +25,8 @@
 						data: frm
 					}).done(function (info) {
 						console.log(info);
+            $("#calificacion").attr('disabled', 'disabled');
+            $("#calificacion").prop('disabled', true);
 					});
 				});
 			}
@@ -35,7 +37,6 @@
       		url: "conversation.php"
       	}).done(function(info) {
       		$("#conversation").html(info);
-      		$("#conversation").prop("scrollHeight");
       	});
       }
 </script>
