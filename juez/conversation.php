@@ -6,7 +6,6 @@
   $web->conexion();
   $web->checarAcceso();
 
-
   //ADMIN-JUEZ
   $sql = "select * from enviarDatos
     inner join clavadista on enviarDatos.cve_clavadista = clavadista.cve_clavadista
@@ -15,19 +14,62 @@
   order by idConversation desc;";
   $result = $web->fetchAll($sql);
 
-  $file = fopen("datos.txt", "w");
-  fwrite($file, "cve_clavadista=>".$result[0]['cve_clavadista'].";");
-  fwrite($file, "cve_nacionalidad=>".$result[0]['cve_nacionalidad'].";");
-  fwrite($file, "nombre_completo=>".$result[0]['nombre_completo'].";");
-  fwrite($file, "dificultad=>".$result[0]['dificultad'].";" );
-  fwrite($file, "cve_clavado=>".$result[0]['cve_clavado']);
-  fclose($file);
+  if(isset($result[0])) {
+    $file = fopen("datos.txt", "w");
+    fwrite($file, "cve_clavadista=>".$result[0]['cve_clavadista'].";");
+    fwrite($file, "cve_nacionalidad=>".$result[0]['cve_nacionalidad'].";");
+    fwrite($file, "nombre_completo=>".$result[0]['nombre_completo'].";");
+    fwrite($file, "dificultad=>".$result[0]['dificultad'].";" );
+    fwrite($file, "cve_clavado=>".$result[0]['cve_clavado']);
+    fclose($file);
+  }
 
   //JUEZ-JUEZ
   $sql = "select * from enviarDatosJuez
-    inner join clavado on clavado.cve_clavado = enviarDatosJuez.cve_clavado
+  inner join clavado on clavado.cve_clavado = enviarDatosJuez.cve_clavado
   order by idConversation desc;";
   $result_2 = $web->fetchAll($sql);
+
+
+  $prom = "0%";
+  if(count($result_2) == 7) {
+    //todos los jueces han calificado
+    $sql = "select cve_clavadista, calificacion from enviarDatosJuez order by calificacion";
+    $temp = $web->fetchAll($sql); //se obtienen  las 7 calificaciones
+
+    $caliRonda = 0;
+    for ($i=2; $i < count($temp)-2; $i++) {
+      $caliRonda = $caliRonda + $temp[$i]['calificacion'];
+    }
+
+    $sql = "select * from ronda";
+    $resRonda = $web->fetchAll($sql);
+
+    $tmp = array('num_ronda'=>count($resRonda), 'cve_clavadista'=>$temp[0]['cve_clavadista'], 'calif_ronda'=>$caliRonda);
+    $web->setTabla('ronda');
+    $web->update($tmp, null, array('num_ronda'=>(count($resRonda) - 1), 'cve_clavadista'=>$temp[0]['cve_clavadista']));
+
+    $sql = "select calif_ronda, cve_genero from ronda
+              inner join clavadista on ronda.cve_clavadista = clavadista.cve_clavadista";
+    $resRonda = $web->fetchAll($sql);
+
+    $prom = 0;
+    for ($i=0; $i < count($resRonda); $i++) {
+      $prom+= $resRonda[$i]['calif_ronda'];
+    }
+
+    if($resRonda[0]['cve_genero'] == 'F') {
+      $prom/= 5;
+    } else {
+      $prom/= 6;
+    }
+
+    $prom.= "%";
+
+  } else {
+    $caliRonda = "";
+  }
+
 
   $file = fopen("datos2.txt", "w");
   for ($i=0; $i < count($result_2); $i++) {
@@ -42,8 +84,13 @@
   }
   fclose($file);
 
-  // echo "<pre>";
-  // die(var_dump($result_2));
+  if(!isset($result[0])) {
+    $result[0]['cve_clavadista'] = "";
+    $result[0]['cve_nacionalidad'] = "";
+    $result[0]['bandera'] = "";
+    $result[0]['nombre_completo'] = "";
+    $result[0]['dificultad'] = "";
+  }
 
   echo '<section>
   	<div id="conversation" class="container-fluid">
@@ -71,16 +118,20 @@
                   echo '<td align="center">Juez Siguiente</td>';
                 }
               }
+            } else {
+              for ($i=0; $i < 7; $i++) {
+                echo '<td align="center">Juez Siguiente</td>';
+              }
             }
 
       echo   '<td align="center">Dificultad: '.$result[0]['dificultad'].'</td>
   					</tr>
   					<tr>
-  						<td align="center" bgcolor="#BF000" colspan="3">Total:</td>
+  						<td align="center" bgcolor="#BF000" colspan="3">'.$prom.'</td>
   						<td align="center"></td>
   						<td align="center"></td>
   						<td align="center"></td>
-  						<td align="center" bgcolor="425c3f" colspan="3">TTT</td>
+  						<td align="center" bgcolor="425c3f" colspan="3">'.$caliRonda.'</td>
   					</tr>
   				</table>
   			</div>

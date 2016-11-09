@@ -20,6 +20,22 @@
         </div>
       </div>
   </div>
+
 </section>
+</div> <!-- FIN CONVERSATION DIV -->
+<script>
+			$(document).on("ready", function(){
+				setInterval("loadOldMessages()", 500)
+			});
+
+      var loadOldMessages = function() {
+      	$.ajax({
+      		type: "POST",
+      		url: "conversation.php"
+      	}).done(function(info) {
+      		$("#conversation").html(info);
+      	});
+      }
+</script>
 </body>
 </html>
