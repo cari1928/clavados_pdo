@@ -31,7 +31,7 @@
       var loadOldMessages = function() {
       	$.ajax({
       		type: "POST",
-      		url: "conversation.php"
+      		url: "conversationR.php"
       	}).done(function(info) {
       		$("#conversation").html(info);
       	});
