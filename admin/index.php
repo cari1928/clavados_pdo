@@ -9,7 +9,9 @@ $web->setTemplate('../templates/admin/'); //inicializa template
 
 $msg = null;
 
-if(isset($_POST['cve_clavadista'])) {
+var_dump($_POST);
+
+if(!isset($_POST['nueva_ronda'])) {
   die("index.php");
 
   $clavadista = arrayClavadista($_POST);
@@ -22,6 +24,9 @@ if(isset($_POST['cve_clavadista'])) {
   $web->insert($clavado);
 
   $msg = array('type'=>'info', 'msg'=>'Enviado correctamente');
+
+} else {
+  
 }
 
 $cmb_nacionalidad = $web->showList("select cve_nacionalidad, descripcion from nacionalidad");

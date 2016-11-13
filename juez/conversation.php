@@ -39,15 +39,18 @@
 
     $caliRonda = 0;
     for ($i=2; $i < count($temp)-2; $i++) {
-      $caliRonda = $caliRonda + $temp[$i]['calificacion'];
+      $caliRonda+= $temp[$i]['calificacion'];
     }
 
     $sql = "select * from ronda";
     $resRonda = $web->fetchAll($sql);
 
+    $numRonda = count($resRonda);
+
     $tmp = array('num_ronda'=>count($resRonda), 'cve_clavadista'=>$temp[0]['cve_clavadista'], 'calif_ronda'=>$caliRonda);
+    var_dump($tmp);
     $web->setTabla('ronda');
-    $web->update($tmp, null, array('num_ronda'=>(count($resRonda) - 1), 'cve_clavadista'=>$temp[0]['cve_clavadista']));
+    $web->update($tmp, null, array('num_ronda'=>count($resRonda), 'cve_clavadista'=>$temp[0]['cve_clavadista']));
 
     $sql = "select calif_ronda, cve_genero from ronda
               inner join clavadista on ronda.cve_clavadista = clavadista.cve_clavadista";
@@ -97,7 +100,7 @@
   		<div class="row">
 
   			<div class="col-sx-12">
-  				<table class="califBar table table-bordered">
+  				<table class="califBar table table-bordered" style="color:white">
   					<tr bgcolor="#648A60">
   						<td align="center" border="none">'.$result[0]['cve_clavadista'].'</td>
   							<td align="center">'.$result[0]['cve_nacionalidad'].'</td>

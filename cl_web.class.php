@@ -131,9 +131,11 @@ class CLweb {
     }
 
     $sql = "update ".$this->getTabla()." set ".$columnas.$where;
+    echo $sql;
     $stmt = $this->conn->prepare($sql);
     for ($i=0; $i < sizeof($nombresColumnas); $i++) {
       $stmt->bindParam(':'.$nombresColumnas[$i], $datos[$nombresColumnas[$i]]);
+      // echo $nombresColumnas[$i]."-".$datos[$nombresColumnas[$i]];
     }
     $pdo=$stmt->execute();
 
