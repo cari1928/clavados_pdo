@@ -6,6 +6,9 @@
       $pass = md5($pass);
       $sql = "select * from usuario where nombre_usuario='".$nombre_usuario."' and pass='".$pass."'";
       $data = $this->fetchAll($sql);
+      if (!isset($_SESSION[$nombre_usuario]['intentos'])) {
+        $_SESSION[$nombre_usuario]['intentos']=0;
+      }
 
       if(isset($data[0])){
         //si el usuario no es administrador ni juez o si ya está logueado
@@ -33,7 +36,18 @@
           $this->indexMessages('Acceso denegado');
         }
       } else{
-        $this->logout();
+        $_SESSION[$nombre_usuario]['intentos']+=1;
+        if ($_SESSION[$nombre_usuario]['intentos']>2) {
+          $this->indexMessages('Usuario bloqueado, contactar al administrador');
+          $this->setTabla("usuario");
+        $this->update(
+          array('estado'=>$elementos['estado'], 'nombre_usuario'=>$elementos['nombre_usuario']),
+          $elementos['nombre_usuario'],
+          array('nombre_usuario'=>$elementos['nombre_usuario']));
+        }
+        else{
+          $this->indexMessages('Datos incorrectos');
+        }
         header("Location: index.php");
       }
     }

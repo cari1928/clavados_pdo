@@ -38,7 +38,7 @@
       $tmp = $result[$i]['nombre_completo'];
       echo "<tr>";
       echo "<td>".($i + 1)."</td>";
-      echo "<td>".$result[$i]['bandera']."</td>";
+      echo "<td><img src='images/flags-normal/".$result[$i]['bandera']."' width='50px'></td>";
       echo "<td>".$result[$i]['cve_nacionalidad']."</td>";
       echo "<td>".$result[$i]['nombre_completo']."</td>";
 
