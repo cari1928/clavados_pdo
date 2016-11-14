@@ -6,8 +6,11 @@
 
   $sql = "select * from ronda
             inner join clavadista on ronda.cve_clavadista = clavadista.cve_clavadista
-            where clavadista.cve_clavadista='".$_POST['cve_clavadista']."'";
+            where clavadista.cve_clavadista='".$_POST['cve_clavadista']."'
+            order by num_ronda DESC";
   $result = $web->fetchAll($sql);
+
+  var_dump($result);
 
   $msg = '';
   if(count($result) == 0) {
@@ -24,13 +27,15 @@
     $tmp = array('num_ronda'=> $result[0]['num_ronda']+= 1, 'cve_clavadista'=>$_POST['cve_clavadista']);
   }
 
+  //die(var_dump($tmp));
   $web->setTabla('ronda');
   $web->insert($tmp); //checar qué elementos se pueden insertar aquí
 
   //Insertar y clavado
   $clavado = arrayClavado($_POST);
+  //var_dump($clavado);
   $web->setTabla('clavado');
-  $web->insert($clavado);
+  $web->update($clavado, null, array('cve_clavado'=>$_POST['cve_clavado']));
 
   $_POST['nombre_usuario'] = $_SESSION['nombre_usuario'];
   unset($_POST['dificultad']);

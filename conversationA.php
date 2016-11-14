@@ -6,16 +6,14 @@
 
   //ADMIN-JUEZ
   $sql = "select distinct num_ronda, bandera, clavadista.cve_nacionalidad, nombre_completo, calif_ronda from ronda
-    inner join enviarDatosJuez on enviarDatosJuez.cve_clavadista = ronda.cve_clavadista
-    inner join clavado on clavado.cve_clavado = enviarDatosJuez.cve_clavado
     inner join clavadista on clavadista.cve_clavadista = ronda.cve_clavadista
     inner join nacionalidad on clavadista.cve_nacionalidad = nacionalidad.cve_nacionalidad
   order by clavadista.cve_clavadista, num_ronda";
   $result = $web->fetchAll($sql);
 
-  // echo $sql;
+  //echo $sql;
   // echo "<pre>";
-  // var_dump($result);
+  //var_dump($result);
   $tmpJ = 0;
 
   echo '<table id="interTable" class="table table-hover"> <!-- Lo cambiaremos por CSS -->
@@ -55,7 +53,7 @@
           echo "<td></td>";
         }
       }
-      $i = $tmpJ + 1;
+      $i = $tmpJ;
 
     echo "</tr>";
   }

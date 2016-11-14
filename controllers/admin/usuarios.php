@@ -5,12 +5,12 @@
     ****************************************************************************/
     var $temp = null;
 
-//-------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------
     function setTemplate($template='../templates/admin/'){
       $this->temp = $this->templateEngine();
       $this->temp->setTemplateDir($template);
     }
-//-------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------
     function assignTemplate($name, $var){
       $this->temp->assign($name, $var);
     }
@@ -51,11 +51,11 @@
 
       $this->temp->display($elements['template']);
     }
-//-------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------
     function assignTypeMessage($type, $msg){
       return '<div class="alert alert-'.$type.'" role="alert">'.$msg.'</div>';
     }
-//----------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------
     function deleteUser($nombre_usuario){ //2016-09-29
       // $count = $this->conn->exec("DELETE FROM usuario WHERE nombre_usuario=".$nombre_usuario);
       //Esto previene inyección SQL!!!
@@ -64,7 +64,7 @@
       $stmt->bindParam(':nombre_usuario', $nombre_usuario, PDO::PARAM_STR);
       $stmt->execute();
     }
-//----------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------
     function getUsuario($nombre_usuario){
       $usuario = array();
       $statement = $this->conn->Prepare("select * from usuario where nombre_usuario='".$nombre_usuario."'");
@@ -73,6 +73,18 @@
 
       return $usuario;
     }
+    
+    /*Utilizado para eliminar datos de las tablas:
+        *enviarDatosJuez
+        *enviarDatos        
+        *clavado
+    */
+    function deleteAll($table) { 
+      $sql = "DELETE FROM ".$table;
+      $stmt = $this->conn->Prepare($sql);
+      //$stmt->bindParam(':nombre_usuario', $nombre_usuario, PDO::PARAM_STR);
+      $stmt->execute();
+    } 
   }
 
 ?>

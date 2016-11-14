@@ -9,11 +9,24 @@ $web->setTemplate('../templates/admin/'); //inicializa template
 
 $msg = null;
 
-var_dump($_POST);
+//var_dump($_POST);
 
-if(!isset($_POST['nueva_ronda'])) {
-  die("index.php");
+if(isset($_POST['nueva_ronda'])) {
+  
+  $sql = "select calif_ronda from ronda";
+  $result = $web->fetchAll($sql);
+  
+  if(!checkNull($result)) {
+    $msg = array('type'=>'danger', 'msg'=>'No es posible');
+  
+  } else {
+    $web->deleteAll('enviarDatosJuez');
+    $web->deleteAll('enviarDatos');
 
+    $msg = array('type'=>'info', 'msg'=>'Nueva ronda creada correctamente');
+  }  
+  
+} elseif(isset($_POST['cve_clavadista'])) {
   $clavadista = arrayClavadista($_POST);
   $clavado = arrayClavado($_POST);
 
@@ -21,25 +34,24 @@ if(!isset($_POST['nueva_ronda'])) {
   $web->insert($clavadista);
 
   $web->setTabla('clavado');
-  $web->insert($clavado);
+  $web->update($clavado, null, array('cve_clavado'=>$_POST['cve_clavado']));
 
   $msg = array('type'=>'info', 'msg'=>'Enviado correctamente');
-
-} else {
-  
 }
 
+$cmb_clavado = $web->showList("select cve_clavado, clavado from clavado");
 $cmb_nacionalidad = $web->showList("select cve_nacionalidad, descripcion from nacionalidad");
 $cmb_clavadista = $web->showList("select cve_clavadista,nombre_completo from clavadista");
 $cmb_genero = $web->showList('select * from genero');
 $web->assignTemplate('cmb_nacionalidad', $cmb_nacionalidad);
 $web->assignTemplate('cmb_genero', $cmb_genero);
 $web->assignTemplate('cmb_clavadista', $cmb_clavadista);
+$web->assignTemplate('cmb_clavado', $cmb_clavado);
 $web->showTemplate(array('title'=>"Administrador",'headerTitle1'=>"SISCACLAO",
       'headerTitle2'=>"Asignación de Niveles de Dificultad",
       'nombre_usuario'=>$_SESSION['nombre_usuario'], 'template'=>"index.html"), $msg);
 
-//------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------
   function arrayClavadista() {
     $temp = array
     (
@@ -50,14 +62,22 @@ $web->showTemplate(array('title'=>"Administrador",'headerTitle1'=>"SISCACLAO",
     );
     return $temp;
   }
-//------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------
   function arrayClavadO($array) {
     $temp = array
     (
       'cve_clavado'=>$_POST['cve_clavado'],
       'dificultad'=>$_POST['dificultad'],
-      'cve_tipo_clavado'=>$_POST['cve_tipo_clavado']
     );
     return $temp;
+  }
+//---------------------------------------------------------------------------------
+  function checkNull($array) {
+    for($i=0; $i<count($array); $i++){
+      if($array[$i]['calif_ronda'] == NULL){
+        return false;
+      }
+    }
+    return true;
   }
 ?>

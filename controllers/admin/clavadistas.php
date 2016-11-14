@@ -5,18 +5,18 @@
     ****************************************************************************/
     var $temp = null;
 
-//-------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------
     function setTemplate($template='../templates/admin/'){
       $this->temp = $this->templateEngine();
       $this->temp->setTemplateDir($template);
     }
-//-------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------
     function assignTemplate($name, $var){
       echo $name."<br>";
       echo $var;
       $this->temp->assign($name, $var);
     }
-//-------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------
     function displayTemplate($name, $var){
       $this->temp->display($name, $var);
     }
@@ -57,11 +57,11 @@
 
       $this->temp->display($elements['template']);
     }
-//-------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------
     function assignTypeMessage($type, $msg){
       return '<div class="alert alert-'.$type.'" role="alert">'.$msg.'</div>';
     }
-//----------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------
     function deleteUser($nombre_usuario){ //2016-09-29
       // $count = $this->conn->exec("DELETE FROM usuario WHERE nombre_usuario=".$nombre_usuario);
       //Esto previene inyección SQL!!!
@@ -70,7 +70,7 @@
       $stmt->bindParam(':nombre_usuario', $nombre_usuario, PDO::PARAM_STR);
       $stmt->execute();
     }
-//----------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------
     function getClavadista($nombre_usuario){
       $usuario = array();
       $statement = $this->conn->Prepare("select * from clavadista where cve_clavadista='".$cve_clavadista."'");
@@ -79,6 +79,7 @@
 
       return $clavadista;
     }
+    
   }
 
 ?>

@@ -1,7 +1,6 @@
 <?php
   include ('../cl_web.class.php');
 
-  $web = new Index;
   $web->conexion();
   $web->checarAcceso();
   $templates = $web->templateEngine();
@@ -36,8 +35,7 @@
     echo "existe post";
   }
 
-
-//---------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------
 function multiexplode ($delimiters,$string) {
     $ready = str_replace($delimiters, $delimiters[0], $string);
     $launch = explode($delimiters[0], $ready);

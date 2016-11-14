@@ -1,7 +1,5 @@
-select bandera from nacionalidad where cve_nacionalidad='AF
-'
-$prom/= 5;
+UPDATE ronda SET calif_ronda=7.2 WHERE num_ronda=2 and cve_clavadista='A000002'
 
-select * from ronda inner join enviarDatosJuez on enviarDatosJuez.cve_clavadista = ronda.cve_clavadista inner join clavado on clavado.cve_clavado = enviarDatosJuez.cve_clavado inner join clavadista on clavadista.cve_clavadista = ronda.cve_clavadista inner join nacionalidad on clavadista.cve_nacionalidad = nacionalidad.cve_nacionalidad order by cve_clavadista, num_ronda
+select distinct num_ronda, bandera, clavadista.cve_nacionalidad, nombre_completo, calif_ronda from ronda inner join enviarDatosJuez on enviarDatosJuez.cve_clavadista = ronda.cve_clavadista inner join clavado on clavado.cve_clavado = enviarDatosJuez.cve_clavado inner join clavadista on clavadista.cve_clavadista = ronda.cve_clavadista inner join nacionalidad on clavadista.cve_nacionalidad = nacionalidad.cve_nacionalidad order by clavadista.cve_clavadista, num_ronda
 
-select * from ronda inner join enviarDatosJuez on enviarDatosJuez.cve_clavadista = ronda.cve_clavadista inner join clavado on clavado.cve_clavado = enviarDatosJuez.cve_clavado inner join clavadista on clavadista.cve_clavadista = ronda.cve_clavadista inner join nacionalidad on clavadista.cve_nacionalidad = nacionalidad.cve_nacionalidad order by clavadista.cve_clavadista, num_ronda
+select distinct num_ronda, bandera, clavadista.cve_nacionalidad, nombre_completo, calif_ronda from ronda inner join clavadista on clavadista.cve_clavadista = ronda.cve_clavadista inner join nacionalidad on clavadista.cve_nacionalidad = nacionalidad.cve_nacionalidad order by clavadista.cve_clavadista, num_ronda

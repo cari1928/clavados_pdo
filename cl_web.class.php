@@ -131,11 +131,11 @@ class CLweb {
     }
 
     $sql = "update ".$this->getTabla()." set ".$columnas.$where;
-    echo $sql;
+    //echo $sql;
     $stmt = $this->conn->prepare($sql);
     for ($i=0; $i < sizeof($nombresColumnas); $i++) {
       $stmt->bindParam(':'.$nombresColumnas[$i], $datos[$nombresColumnas[$i]]);
-      // echo $nombresColumnas[$i]."-".$datos[$nombresColumnas[$i]];
+      //echo $nombresColumnas[$i]."-".$datos[$nombresColumnas[$i]]."<br>";
     }
     $pdo=$stmt->execute();
 
@@ -143,6 +143,20 @@ class CLweb {
       echo "\nPDO::errorInfo():\n";
       print_r($stmt->errorInfo());
       die();
+    }
+  }
+  
+  function update2($array) {
+    $sql = "UPDATE ronda SET calif_ronda=".$array['calif_ronda']." WHERE num_ronda=".$array['num_ronda']." and cve_clavadista='".$array['cve_clavadista']."'";
+    echo $sql;
+    $stmt = $this->conn->query($sql);
+    $OK = $stmt->execute();
+    $error = $stmt->errorInfo();
+    
+    if(!$OK) {
+      echo $error[2];
+    } else {
+      echo "Todo bien";
     }
   }
 
@@ -240,7 +254,7 @@ class CLweb {
   }
 
 } //END OF THE CLASS
-//-----------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------
 
 //Incluimos todos los controladores - //2016-09-29 se agregó foreach
   // foreach (glob("controllers/*.php") as $nombre_fichero) {
@@ -251,7 +265,6 @@ class CLweb {
  include('controllers/registro.php');
  include('controllers/admin/usuarios.php');
  include('controllers/admin/clavadistas.php');
- include('controllers/juez/index.php');
 
 $web = new CLweb;
 $web->conexion();
