@@ -45,10 +45,17 @@
     $sql = "select * from ronda";
     $resRonda = $web->fetchAll($sql);
   
-    $tmp = array('num_ronda'=>$resRonda[0]['num_ronda'], 'cve_clavadista'=>$temp[0]['cve_clavadista'], 'calif_ronda'=>$caliRonda);
+    $tmp = array(
+      'num_ronda'=>$resRonda[0]['num_ronda'], 
+      'cve_clavadista'=>$temp[0]['cve_clavadista'], 
+      'calif_ronda'=>$caliRonda
+    );
+    
+    //print_r($tmp);
+    
     $web->setTabla('ronda');
     $web->update($tmp, null, array('num_ronda'=>$resRonda[0]['num_ronda'], 'cve_clavadista'=>$temp[0]['cve_clavadista']));
-    //$web->update2($tmp);
+    $web->update2($tmp);
 
     $sql = "select calif_ronda, cve_genero from ronda
               inner join clavadista on ronda.cve_clavadista = clavadista.cve_clavadista";

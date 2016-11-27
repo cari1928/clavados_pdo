@@ -1,0 +1,1655 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+- phpMyAdmin XML Dump
+- version 4.4.14
+- https://www.phpmyadmin.net
+-
+- Servidor: 127.0.0.1
+- Tiempo de generación: 13-11-2016 a las 22:54:27
+- Versión del servidor: 5.6.26
+- Versión de PHP: 5.5.28
+-->
+
+<pma_xml_export version="1.0" xmlns:pma="http://www.phpmyadmin.net/some_doc_url/">
+    <!--
+    - Structure schemas
+    -->
+    <pma:structure_schemas>
+        <pma:database name="bk_clavados_pdo" collation="latin1_swedish_ci" charset="latin1">
+            <pma:table name="calificacion">
+                CREATE TABLE `calificacion` (
+                  `ejecucion` int(11) NOT NULL AUTO_INCREMENT,
+                  `cve_clavadista` varchar(7) NOT NULL,
+                  `cve_clavado` varchar(7) NOT NULL,
+                  `nombre_usuario` varchar(10) NOT NULL,
+                  `calificacion` float(12,0) DEFAULT NULL,
+                  PRIMARY KEY (`ejecucion`,`cve_clavadista`,`cve_clavado`,`nombre_usuario`),
+                  KEY `calificacionfk1` (`nombre_usuario`),
+                  KEY `calificacionfk3` (`cve_clavado`),
+                  KEY `calificacionfk2` (`cve_clavadista`),
+                  CONSTRAINT `calificacionfk1` FOREIGN KEY (`nombre_usuario`) REFERENCES `usuario` (`nombre_usuario`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+                  CONSTRAINT `calificacionfk2` FOREIGN KEY (`cve_clavadista`) REFERENCES `clavadista` (`cve_clavadista`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+                  CONSTRAINT `calificacionfk3` FOREIGN KEY (`cve_clavado`) REFERENCES `clavado` (`cve_clavado`) ON DELETE NO ACTION ON UPDATE NO ACTION
+                ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+            </pma:table>
+            <pma:table name="clavadista">
+                CREATE TABLE `clavadista` (
+                  `cve_clavadista` varchar(7) NOT NULL,
+                  `nombre_completo` varchar(40) DEFAULT NULL,
+                  `cve_genero` varchar(1) DEFAULT NULL,
+                  `cve_nacionalidad` varchar(4) DEFAULT NULL,
+                  PRIMARY KEY (`cve_clavadista`),
+                  KEY `clavadistafk1` (`cve_genero`),
+                  KEY `clavadistafk2` (`cve_nacionalidad`),
+                  CONSTRAINT `clavadistafk1` FOREIGN KEY (`cve_genero`) REFERENCES `genero` (`cve_genero`),
+                  CONSTRAINT `clavadistafk2` FOREIGN KEY (`cve_nacionalidad`) REFERENCES `nacionalidad` (`cve_nacionalidad`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+            </pma:table>
+            <pma:table name="clavado">
+                CREATE TABLE `clavado` (
+                  `cve_clavado` varchar(7) NOT NULL,
+                  `dificultad` float DEFAULT NULL,
+                  PRIMARY KEY (`cve_clavado`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+            </pma:table>
+            <pma:table name="enviardatos">
+                CREATE TABLE `enviardatos` (
+                  `idConversation` int(11) NOT NULL AUTO_INCREMENT,
+                  `nombre_usuario` varchar(10) NOT NULL DEFAULT '',
+                  `cve_clavadista` varchar(7) NOT NULL DEFAULT '',
+                  `cve_clavado` varchar(7) NOT NULL DEFAULT '',
+                  PRIMARY KEY (`idConversation`,`nombre_usuario`,`cve_clavadista`,`cve_clavado`),
+                  KEY `convFK` (`nombre_usuario`),
+                  KEY `convFK2` (`cve_clavadista`),
+                  KEY `convFK3` (`cve_clavado`),
+                  CONSTRAINT `convFK` FOREIGN KEY (`nombre_usuario`) REFERENCES `usuario` (`nombre_usuario`),
+                  CONSTRAINT `convFK2` FOREIGN KEY (`cve_clavadista`) REFERENCES `clavadista` (`cve_clavadista`),
+                  CONSTRAINT `convFK3` FOREIGN KEY (`cve_clavado`) REFERENCES `clavado` (`cve_clavado`)
+                ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
+            </pma:table>
+            <pma:table name="enviardatosjuez">
+                CREATE TABLE `enviardatosjuez` (
+                  `idConversation` int(11) NOT NULL AUTO_INCREMENT,
+                  `nombre_usuario` varchar(255) NOT NULL,
+                  `cve_clavadista` varchar(7) NOT NULL,
+                  `cve_clavado` varchar(7) NOT NULL,
+                  `calificacion` float NOT NULL,
+                  PRIMARY KEY (`idConversation`,`nombre_usuario`,`cve_clavadista`,`cve_clavado`)
+                ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+            </pma:table>
+            <pma:table name="genero">
+                CREATE TABLE `genero` (
+                  `cve_genero` varchar(1) NOT NULL,
+                  `genero` varchar(9) DEFAULT NULL,
+                  PRIMARY KEY (`cve_genero`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+            </pma:table>
+            <pma:table name="nacionalidad">
+                CREATE TABLE `nacionalidad` (
+                  `cve_nacionalidad` varchar(4) NOT NULL,
+                  `descripcion` text,
+                  `bandera` text,
+                  PRIMARY KEY (`cve_nacionalidad`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+            </pma:table>
+            <pma:table name="rol">
+                CREATE TABLE `rol` (
+                  `cve_rol` varchar(1) NOT NULL,
+                  `rol` varchar(13) DEFAULT NULL,
+                  PRIMARY KEY (`cve_rol`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+            </pma:table>
+            <pma:table name="usuario">
+                CREATE TABLE `usuario` (
+                  `nombre_usuario` varchar(10) NOT NULL,
+                  `pass` varchar(32) DEFAULT NULL,
+                  `nombre_real` varchar(50) DEFAULT NULL,
+                  `estado` int(11) DEFAULT NULL,
+                  `cve_rol` varchar(13) DEFAULT NULL,
+                  PRIMARY KEY (`nombre_usuario`),
+                  KEY `usuariofk1` (`cve_rol`),
+                  CONSTRAINT `usuariofk1` FOREIGN KEY (`cve_rol`) REFERENCES `rol` (`cve_rol`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+            </pma:table>
+        </pma:database>
+    </pma:structure_schemas>
+
+    <!--
+    - Base de datos: 'bk_clavados_pdo'
+    -->
+    <database name="bk_clavados_pdo">
+        <!-- Tabla calificacion -->
+        <!-- Tabla clavadista -->
+        <table name="clavadista">
+            <column name="cve_clavadista">A000001</column>
+            <column name="nombre_completo">Juan PÃ©rez</column>
+            <column name="cve_genero">M</column>
+            <column name="cve_nacionalidad">A1</column>
+        </table>
+        <table name="clavadista">
+            <column name="cve_clavadista">A000002</column>
+            <column name="nombre_completo">Shaine Z. Gonzales</column>
+            <column name="cve_genero">M</column>
+            <column name="cve_nacionalidad">A2</column>
+        </table>
+        <table name="clavadista">
+            <column name="cve_clavadista">A000003</column>
+            <column name="nombre_completo">Olivia P. Torres</column>
+            <column name="cve_genero">F</column>
+            <column name="cve_nacionalidad">AD</column>
+        </table>
+        <table name="clavadista">
+            <column name="cve_clavadista">A000004</column>
+            <column name="nombre_completo">Yetta O. Hensley</column>
+            <column name="cve_genero">F</column>
+            <column name="cve_nacionalidad">AD</column>
+        </table>
+        <table name="clavadista">
+            <column name="cve_clavadista">A000005</column>
+            <column name="nombre_completo">Solomon N. Steele</column>
+            <column name="cve_genero">F</column>
+            <column name="cve_nacionalidad">AE</column>
+        </table>
+        <table name="clavadista">
+            <column name="cve_clavadista">A000006</column>
+            <column name="nombre_completo">Solomon N. Steele</column>
+            <column name="cve_genero">F</column>
+            <column name="cve_nacionalidad">AE</column>
+        </table>
+        <table name="clavadista">
+            <column name="cve_clavadista">A000007</column>
+            <column name="nombre_completo">Imani S. Goodwin</column>
+            <column name="cve_genero">M</column>
+            <column name="cve_nacionalidad">AF</column>
+        </table>
+        <table name="clavadista">
+            <column name="cve_clavadista">A000008</column>
+            <column name="nombre_completo">Mariana Luna Bellman</column>
+            <column name="cve_genero">F</column>
+            <column name="cve_nacionalidad">AI</column>
+        </table>
+        <table name="clavadista">
+            <column name="cve_clavadista">A000009</column>
+            <column name="nombre_completo">Fulanito</column>
+            <column name="cve_genero">M</column>
+            <column name="cve_nacionalidad">AU</column>
+        </table>
+        <!-- Tabla clavado -->
+        <table name="clavado">
+            <column name="cve_clavado">aaa</column>
+            <column name="dificultad">2</column>
+        </table>
+        <table name="clavado">
+            <column name="cve_clavado">abd</column>
+            <column name="dificultad">1</column>
+        </table>
+        <table name="clavado">
+            <column name="cve_clavado">bbb</column>
+            <column name="dificultad">3</column>
+        </table>
+        <table name="clavado">
+            <column name="cve_clavado">BDD</column>
+            <column name="dificultad">3</column>
+        </table>
+        <table name="clavado">
+            <column name="cve_clavado">C000001</column>
+            <column name="dificultad">1</column>
+        </table>
+        <table name="clavado">
+            <column name="cve_clavado">C000002</column>
+            <column name="dificultad">1</column>
+        </table>
+        <table name="clavado">
+            <column name="cve_clavado">C000003</column>
+            <column name="dificultad">1.5</column>
+        </table>
+        <table name="clavado">
+            <column name="cve_clavado">C000004</column>
+            <column name="dificultad">1.8</column>
+        </table>
+        <table name="clavado">
+            <column name="cve_clavado">C000005</column>
+            <column name="dificultad">2.2</column>
+        </table>
+        <table name="clavado">
+            <column name="cve_clavado">C000007</column>
+            <column name="dificultad">2.9</column>
+        </table>
+        <table name="clavado">
+            <column name="cve_clavado">C000008</column>
+            <column name="dificultad">5</column>
+        </table>
+        <table name="clavado">
+            <column name="cve_clavado">C000009</column>
+            <column name="dificultad">4</column>
+        </table>
+        <table name="clavado">
+            <column name="cve_clavado">ccc</column>
+            <column name="dificultad">5</column>
+        </table>
+        <table name="clavado">
+            <column name="cve_clavado">ddd</column>
+            <column name="dificultad">4</column>
+        </table>
+        <table name="clavado">
+            <column name="cve_clavado">eee</column>
+            <column name="dificultad">3</column>
+        </table>
+        <table name="clavado">
+            <column name="cve_clavado">EZE</column>
+            <column name="dificultad">4</column>
+        </table>
+        <table name="clavado">
+            <column name="cve_clavado">hhh</column>
+            <column name="dificultad">3</column>
+        </table>
+        <table name="clavado">
+            <column name="cve_clavado">qwe</column>
+            <column name="dificultad">2</column>
+        </table>
+        <table name="clavado">
+            <column name="cve_clavado">RRT</column>
+            <column name="dificultad">6</column>
+        </table>
+        <table name="clavado">
+            <column name="cve_clavado">Sfa</column>
+            <column name="dificultad">2</column>
+        </table>
+        <table name="clavado">
+            <column name="cve_clavado">ttt</column>
+            <column name="dificultad">2</column>
+        </table>
+        <table name="clavado">
+            <column name="cve_clavado">yyy</column>
+            <column name="dificultad">3</column>
+        </table>
+        <table name="clavado">
+            <column name="cve_clavado">ZZQ</column>
+            <column name="dificultad">2</column>
+        </table>
+        <table name="clavado">
+            <column name="cve_clavado">zzz</column>
+            <column name="dificultad">3</column>
+        </table>
+        <!-- Tabla enviardatos -->
+        <table name="enviardatos">
+            <column name="idConversation">3</column>
+            <column name="nombre_usuario">Jose</column>
+            <column name="cve_clavadista">A000001</column>
+            <column name="cve_clavado">abd</column>
+        </table>
+        <table name="enviardatos">
+            <column name="idConversation">9</column>
+            <column name="nombre_usuario">Jose</column>
+            <column name="cve_clavadista">A000002</column>
+            <column name="cve_clavado">RRT</column>
+        </table>
+        <table name="enviardatos">
+            <column name="idConversation">4</column>
+            <column name="nombre_usuario">Jose</column>
+            <column name="cve_clavadista">A000003</column>
+            <column name="cve_clavado">BDD</column>
+        </table>
+        <table name="enviardatos">
+            <column name="idConversation">10</column>
+            <column name="nombre_usuario">Jose</column>
+            <column name="cve_clavadista">A000003</column>
+            <column name="cve_clavado">ZZQ</column>
+        </table>
+        <table name="enviardatos">
+            <column name="idConversation">11</column>
+            <column name="nombre_usuario">Jose</column>
+            <column name="cve_clavadista">A000004</column>
+            <column name="cve_clavado">Sfa</column>
+        </table>
+        <table name="enviardatos">
+            <column name="idConversation">5</column>
+            <column name="nombre_usuario">Jose</column>
+            <column name="cve_clavadista">A000007</column>
+            <column name="cve_clavado">ttt</column>
+        </table>
+        <table name="enviardatos">
+            <column name="idConversation">7</column>
+            <column name="nombre_usuario">Jose</column>
+            <column name="cve_clavadista">A000007</column>
+            <column name="cve_clavado">qwe</column>
+        </table>
+        <table name="enviardatos">
+            <column name="idConversation">6</column>
+            <column name="nombre_usuario">Jose</column>
+            <column name="cve_clavadista">A000008</column>
+            <column name="cve_clavado">hhh</column>
+        </table>
+        <table name="enviardatos">
+            <column name="idConversation">8</column>
+            <column name="nombre_usuario">Jose</column>
+            <column name="cve_clavadista">A000009</column>
+            <column name="cve_clavado">EZE</column>
+        </table>
+        <!-- Tabla enviardatosjuez -->
+        <table name="enviardatosjuez">
+            <column name="idConversation">3</column>
+            <column name="nombre_usuario">Juez2</column>
+            <column name="cve_clavadista">A000004</column>
+            <column name="cve_clavado">Sfa</column>
+            <column name="calificacion">5</column>
+        </table>
+        <table name="enviardatosjuez">
+            <column name="idConversation">4</column>
+            <column name="nombre_usuario">Juez3</column>
+            <column name="cve_clavadista">A000004</column>
+            <column name="cve_clavado">Sfa</column>
+            <column name="calificacion">2</column>
+        </table>
+        <!-- Tabla genero -->
+        <table name="genero">
+            <column name="cve_genero">F</column>
+            <column name="genero">Femenino</column>
+        </table>
+        <table name="genero">
+            <column name="cve_genero">M</column>
+            <column name="genero">Masculino</column>
+        </table>
+        <!-- Tabla nacionalidad -->
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">A1</column>
+            <column name="descripcion">Anonymous Proxy</column>
+            <column name="bandera">a1.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">A2</column>
+            <column name="descripcion">Satellite Provider</column>
+            <column name="bandera">a2.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">AD</column>
+            <column name="descripcion">Andorra</column>
+            <column name="bandera">ad.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">AE</column>
+            <column name="descripcion">United Arab Emirates</column>
+            <column name="bandera">ae.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">AF</column>
+            <column name="descripcion">Afghanistan</column>
+            <column name="bandera">af.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">AG</column>
+            <column name="descripcion">Antigua and Barbuda</column>
+            <column name="bandera">ag.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">AI</column>
+            <column name="descripcion">Anguilla</column>
+            <column name="bandera">ai.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">AL</column>
+            <column name="descripcion">Albania</column>
+            <column name="bandera">al.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">AM</column>
+            <column name="descripcion">Armenia</column>
+            <column name="bandera">am.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">AO</column>
+            <column name="descripcion">Angola</column>
+            <column name="bandera">ao.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">AP</column>
+            <column name="descripcion">Asia/Pacific Region</column>
+            <column name="bandera">ap.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">AQ</column>
+            <column name="descripcion">Antarctica</column>
+            <column name="bandera">aq.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">AR</column>
+            <column name="descripcion">Argentina</column>
+            <column name="bandera">ar.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">AS</column>
+            <column name="descripcion">American Samoa</column>
+            <column name="bandera">as.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">AT</column>
+            <column name="descripcion">Austria</column>
+            <column name="bandera">at.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">AU</column>
+            <column name="descripcion">Australia</column>
+            <column name="bandera">au.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">AW</column>
+            <column name="descripcion">Aruba</column>
+            <column name="bandera">aw.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">AX</column>
+            <column name="descripcion">Aland Islands</column>
+            <column name="bandera">ax.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">AZ</column>
+            <column name="descripcion">Azerbaijan</column>
+            <column name="bandera">az.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">BA</column>
+            <column name="descripcion">Bosnia and Herzegovina</column>
+            <column name="bandera">ba.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">BB</column>
+            <column name="descripcion">Barbados</column>
+            <column name="bandera">bb.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">BD</column>
+            <column name="descripcion">Bangladesh</column>
+            <column name="bandera">bd.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">BE</column>
+            <column name="descripcion">Belgium</column>
+            <column name="bandera">be.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">BF</column>
+            <column name="descripcion">Burkina Faso</column>
+            <column name="bandera">bf.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">BG</column>
+            <column name="descripcion">Bulgaria</column>
+            <column name="bandera">bg.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">BH</column>
+            <column name="descripcion">Bahrain</column>
+            <column name="bandera">bh.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">BI</column>
+            <column name="descripcion">Burundi</column>
+            <column name="bandera">bi.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">BJ</column>
+            <column name="descripcion">Benin</column>
+            <column name="bandera">bj.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">BL</column>
+            <column name="descripcion">Saint Barthelemy</column>
+            <column name="bandera">bl.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">BM</column>
+            <column name="descripcion">Bermuda</column>
+            <column name="bandera">bm.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">BN</column>
+            <column name="descripcion">Brunei Darussalam</column>
+            <column name="bandera">bn.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">BO</column>
+            <column name="descripcion">Bolivia</column>
+            <column name="bandera">bo.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">BQ</column>
+            <column name="descripcion">Bonair</column>
+            <column name="bandera">bq.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">BR</column>
+            <column name="descripcion">Brazil</column>
+            <column name="bandera">br.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">BS</column>
+            <column name="descripcion">Bahamas</column>
+            <column name="bandera">bs.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">BT</column>
+            <column name="descripcion">Bhutan</column>
+            <column name="bandera">bt.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">BW</column>
+            <column name="descripcion">Botswana</column>
+            <column name="bandera">bw.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">BY</column>
+            <column name="descripcion">Belarus</column>
+            <column name="bandera">by.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">BZ</column>
+            <column name="descripcion">Belize</column>
+            <column name="bandera">bz.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">CA</column>
+            <column name="descripcion">Canada</column>
+            <column name="bandera">ca.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">CC</column>
+            <column name="descripcion">Cocos (Keeling) Islands</column>
+            <column name="bandera">cc.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">CD</column>
+            <column name="descripcion">Cong</column>
+            <column name="bandera">cd.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">CF</column>
+            <column name="descripcion">Central African Republic</column>
+            <column name="bandera">cf.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">CG</column>
+            <column name="descripcion">Congo</column>
+            <column name="bandera">cg.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">CH</column>
+            <column name="descripcion">Switzerland</column>
+            <column name="bandera">ch.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">CI</column>
+            <column name="descripcion">Cote D'Ivoire</column>
+            <column name="bandera">ci.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">CK</column>
+            <column name="descripcion">Cook Islands</column>
+            <column name="bandera">ck.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">CL</column>
+            <column name="descripcion">Chile</column>
+            <column name="bandera">cl.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">CM</column>
+            <column name="descripcion">Cameroon</column>
+            <column name="bandera">cm.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">CN</column>
+            <column name="descripcion">China</column>
+            <column name="bandera">cn.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">CO</column>
+            <column name="descripcion">Colombia</column>
+            <column name="bandera">co.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">CR</column>
+            <column name="descripcion">Costa Rica</column>
+            <column name="bandera">cr.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">CU</column>
+            <column name="descripcion">Cuba</column>
+            <column name="bandera">cu.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">CV</column>
+            <column name="descripcion">Cape Verde</column>
+            <column name="bandera">cv.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">CW</column>
+            <column name="descripcion">Curacao</column>
+            <column name="bandera">cw.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">CX</column>
+            <column name="descripcion">Christmas Island</column>
+            <column name="bandera">cx.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">CY</column>
+            <column name="descripcion">Cyprus</column>
+            <column name="bandera">cy.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">CZ</column>
+            <column name="descripcion">Czech Republic</column>
+            <column name="bandera">cz.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">DE</column>
+            <column name="descripcion">Germany</column>
+            <column name="bandera">de.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">DJ</column>
+            <column name="descripcion">Djibouti</column>
+            <column name="bandera">dj.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">DK</column>
+            <column name="descripcion">Denmark</column>
+            <column name="bandera">dk.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">DM</column>
+            <column name="descripcion">Dominica</column>
+            <column name="bandera">dm.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">DO</column>
+            <column name="descripcion">Dominican Republic</column>
+            <column name="bandera">do.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">DZ</column>
+            <column name="descripcion">Algeria</column>
+            <column name="bandera">dz.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">EC</column>
+            <column name="descripcion">Ecuador</column>
+            <column name="bandera">ec.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">EE</column>
+            <column name="descripcion">Estonia</column>
+            <column name="bandera">ee.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">EG</column>
+            <column name="descripcion">Egypt</column>
+            <column name="bandera">eg.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">EH</column>
+            <column name="descripcion">Western Sahara</column>
+            <column name="bandera">eh.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">ER</column>
+            <column name="descripcion">Eritrea</column>
+            <column name="bandera">er.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">ES</column>
+            <column name="descripcion">Spain</column>
+            <column name="bandera">es.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">ET</column>
+            <column name="descripcion">Ethiopia</column>
+            <column name="bandera">et.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">EU</column>
+            <column name="descripcion">Europe</column>
+            <column name="bandera">eu.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">FI</column>
+            <column name="descripcion">Finland</column>
+            <column name="bandera">fi.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">FJ</column>
+            <column name="descripcion">Fiji</column>
+            <column name="bandera">fj.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">FK</column>
+            <column name="descripcion">Falkland Islands (Malvinas)</column>
+            <column name="bandera">fk.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">FM</column>
+            <column name="descripcion">Micronesi</column>
+            <column name="bandera">fm.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">FO</column>
+            <column name="descripcion">Faroe Islands</column>
+            <column name="bandera">fo.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">FR</column>
+            <column name="descripcion">France</column>
+            <column name="bandera">fr.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">GA</column>
+            <column name="descripcion">Gabon</column>
+            <column name="bandera">ga.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">GB</column>
+            <column name="descripcion">United Kingdom</column>
+            <column name="bandera">gb.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">GD</column>
+            <column name="descripcion">Grenada</column>
+            <column name="bandera">gd.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">GE</column>
+            <column name="descripcion">Georgia</column>
+            <column name="bandera">ge.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">GF</column>
+            <column name="descripcion">French Guiana</column>
+            <column name="bandera">gf.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">GG</column>
+            <column name="descripcion">Guernsey</column>
+            <column name="bandera">gg.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">GH</column>
+            <column name="descripcion">Ghana</column>
+            <column name="bandera">gh.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">GI</column>
+            <column name="descripcion">Gibraltar</column>
+            <column name="bandera">gi.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">GL</column>
+            <column name="descripcion">Greenland</column>
+            <column name="bandera">gl.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">GM</column>
+            <column name="descripcion">Gambia</column>
+            <column name="bandera">gm.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">GN</column>
+            <column name="descripcion">Guinea</column>
+            <column name="bandera">gn.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">GP</column>
+            <column name="descripcion">Guadeloupe</column>
+            <column name="bandera">gp.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">GQ</column>
+            <column name="descripcion">Equatorial Guinea</column>
+            <column name="bandera">gq.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">GR</column>
+            <column name="descripcion">Greece</column>
+            <column name="bandera">gr.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">GS</column>
+            <column name="descripcion">South Georgia and the South Sandwich Islands</column>
+            <column name="bandera">gs.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">GT</column>
+            <column name="descripcion">Guatemala</column>
+            <column name="bandera">gt.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">GU</column>
+            <column name="descripcion">Guam</column>
+            <column name="bandera">gu.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">GW</column>
+            <column name="descripcion">Guinea-Bissau</column>
+            <column name="bandera">gw.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">GY</column>
+            <column name="descripcion">Guyana</column>
+            <column name="bandera">gy.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">HK</column>
+            <column name="descripcion">Hong Kong</column>
+            <column name="bandera">hk.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">HN</column>
+            <column name="descripcion">Honduras</column>
+            <column name="bandera">hn.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">HR</column>
+            <column name="descripcion">Croatia</column>
+            <column name="bandera">hr.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">HT</column>
+            <column name="descripcion">Haiti</column>
+            <column name="bandera">ht.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">HU</column>
+            <column name="descripcion">Hungary</column>
+            <column name="bandera">hu.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">ID</column>
+            <column name="descripcion">Indonesia</column>
+            <column name="bandera">id.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">IE</column>
+            <column name="descripcion">Ireland</column>
+            <column name="bandera">ie.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">IL</column>
+            <column name="descripcion">Israel</column>
+            <column name="bandera">il.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">IM</column>
+            <column name="descripcion">Isle of Man</column>
+            <column name="bandera">im.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">IN</column>
+            <column name="descripcion">India</column>
+            <column name="bandera">in.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">IO</column>
+            <column name="descripcion">British Indian Ocean Territory</column>
+            <column name="bandera">io.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">IQ</column>
+            <column name="descripcion">Iraq</column>
+            <column name="bandera">iq.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">IR</column>
+            <column name="descripcion">Ira</column>
+            <column name="bandera">ir.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">IS</column>
+            <column name="descripcion">Iceland</column>
+            <column name="bandera">is.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">IT</column>
+            <column name="descripcion">Italy</column>
+            <column name="bandera">it.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">JE</column>
+            <column name="descripcion">Jersey</column>
+            <column name="bandera">je.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">JM</column>
+            <column name="descripcion">Jamaica</column>
+            <column name="bandera">jm.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">JO</column>
+            <column name="descripcion">Jordan</column>
+            <column name="bandera">jo.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">JP</column>
+            <column name="descripcion">Japan</column>
+            <column name="bandera">jp.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">KE</column>
+            <column name="descripcion">Kenya</column>
+            <column name="bandera">ke.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">KG</column>
+            <column name="descripcion">Kyrgyzstan</column>
+            <column name="bandera">kg.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">KH</column>
+            <column name="descripcion">Cambodia</column>
+            <column name="bandera">kh.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">KI</column>
+            <column name="descripcion">Kiribati</column>
+            <column name="bandera">ki.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">KM</column>
+            <column name="descripcion">Comoros</column>
+            <column name="bandera">km.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">KN</column>
+            <column name="descripcion">Saint Kitts and Nevis</column>
+            <column name="bandera">kn.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">KP</column>
+            <column name="descripcion">Kore</column>
+            <column name="bandera">kp.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">KR</column>
+            <column name="descripcion">Kore</column>
+            <column name="bandera">kr.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">KW</column>
+            <column name="descripcion">Kuwait</column>
+            <column name="bandera">kw.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">KY</column>
+            <column name="descripcion">Cayman Islands</column>
+            <column name="bandera">ky.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">KZ</column>
+            <column name="descripcion">Kazakhstan</column>
+            <column name="bandera">kz.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">LA</column>
+            <column name="descripcion">Lao People's Democratic Republic</column>
+            <column name="bandera">la.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">LB</column>
+            <column name="descripcion">Lebanon</column>
+            <column name="bandera">lb.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">LC</column>
+            <column name="descripcion">Saint Lucia</column>
+            <column name="bandera">lc.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">LI</column>
+            <column name="descripcion">Liechtenstein</column>
+            <column name="bandera">li.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">LK</column>
+            <column name="descripcion">Sri Lanka</column>
+            <column name="bandera">lk.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">LR</column>
+            <column name="descripcion">Liberia</column>
+            <column name="bandera">lr.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">LS</column>
+            <column name="descripcion">Lesotho</column>
+            <column name="bandera">ls.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">LT</column>
+            <column name="descripcion">Lithuania</column>
+            <column name="bandera">lt.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">LU</column>
+            <column name="descripcion">Luxembourg</column>
+            <column name="bandera">lu.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">LV</column>
+            <column name="descripcion">Latvia</column>
+            <column name="bandera">lv.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">LY</column>
+            <column name="descripcion">Libya</column>
+            <column name="bandera">ly.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">MA</column>
+            <column name="descripcion">Morocco</column>
+            <column name="bandera">ma.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">MC</column>
+            <column name="descripcion">Monaco</column>
+            <column name="bandera">mc.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">MD</column>
+            <column name="descripcion">Moldov</column>
+            <column name="bandera">md.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">ME</column>
+            <column name="descripcion">Montenegro</column>
+            <column name="bandera">me.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">MF</column>
+            <column name="descripcion">Saint Martin</column>
+            <column name="bandera">mf.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">MG</column>
+            <column name="descripcion">Madagascar</column>
+            <column name="bandera">mg.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">MH</column>
+            <column name="descripcion">Marshall Islands</column>
+            <column name="bandera">mh.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">MK</column>
+            <column name="descripcion">Macedonia</column>
+            <column name="bandera">mk.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">ML</column>
+            <column name="descripcion">Mali</column>
+            <column name="bandera">ml.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">MM</column>
+            <column name="descripcion">Myanmar</column>
+            <column name="bandera">mm.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">MN</column>
+            <column name="descripcion">Mongolia</column>
+            <column name="bandera">mn.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">MO</column>
+            <column name="descripcion">Macau</column>
+            <column name="bandera">mo.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">MP</column>
+            <column name="descripcion">Northern Mariana Islands</column>
+            <column name="bandera">mp.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">MQ</column>
+            <column name="descripcion">Martinique</column>
+            <column name="bandera">mq.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">MR</column>
+            <column name="descripcion">Mauritania</column>
+            <column name="bandera">mr.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">MS</column>
+            <column name="descripcion">Montserrat</column>
+            <column name="bandera">ms.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">MT</column>
+            <column name="descripcion">Malta</column>
+            <column name="bandera">mt.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">MU</column>
+            <column name="descripcion">Mauritius</column>
+            <column name="bandera">mu.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">MV</column>
+            <column name="descripcion">Maldives</column>
+            <column name="bandera">mv.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">MW</column>
+            <column name="descripcion">Malawi</column>
+            <column name="bandera">mw.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">MX</column>
+            <column name="descripcion">Mexico</column>
+            <column name="bandera">mx.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">MY</column>
+            <column name="descripcion">Malaysia</column>
+            <column name="bandera">my.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">MZ</column>
+            <column name="descripcion">Mozambique</column>
+            <column name="bandera">mz.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">NA</column>
+            <column name="descripcion">Namibia</column>
+            <column name="bandera">na.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">NC</column>
+            <column name="descripcion">New Caledonia</column>
+            <column name="bandera">nc.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">NE</column>
+            <column name="descripcion">Niger</column>
+            <column name="bandera">ne.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">NF</column>
+            <column name="descripcion">Norfolk Island</column>
+            <column name="bandera">nf.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">NG</column>
+            <column name="descripcion">Nigeria</column>
+            <column name="bandera">ng.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">NI</column>
+            <column name="descripcion">Nicaragua</column>
+            <column name="bandera">ni.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">NL</column>
+            <column name="descripcion">Netherlands</column>
+            <column name="bandera">nl.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">NO</column>
+            <column name="descripcion">Norway</column>
+            <column name="bandera">no.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">NP</column>
+            <column name="descripcion">Nepal</column>
+            <column name="bandera">np.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">NR</column>
+            <column name="descripcion">Nauru</column>
+            <column name="bandera">nr.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">NU</column>
+            <column name="descripcion">Niue</column>
+            <column name="bandera">nu.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">NZ</column>
+            <column name="descripcion">New Zealand</column>
+            <column name="bandera">nz.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">OM</column>
+            <column name="descripcion">Oman</column>
+            <column name="bandera">om.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">PA</column>
+            <column name="descripcion">Panama</column>
+            <column name="bandera">pa.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">PE</column>
+            <column name="descripcion">Peru</column>
+            <column name="bandera">pe.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">PF</column>
+            <column name="descripcion">French Polynesia</column>
+            <column name="bandera">pf.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">PG</column>
+            <column name="descripcion">Papua New Guinea</column>
+            <column name="bandera">pg.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">PH</column>
+            <column name="descripcion">Philippines</column>
+            <column name="bandera">ph.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">PK</column>
+            <column name="descripcion">Pakistan</column>
+            <column name="bandera">pk.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">PL</column>
+            <column name="descripcion">Poland</column>
+            <column name="bandera">pl.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">PM</column>
+            <column name="descripcion">Saint Pierre and Miquelon</column>
+            <column name="bandera">pm.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">PN</column>
+            <column name="descripcion">Pitcairn Islands</column>
+            <column name="bandera">pn.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">PR</column>
+            <column name="descripcion">Puerto Rico</column>
+            <column name="bandera">pr.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">PS</column>
+            <column name="descripcion">Palestinian Territory</column>
+            <column name="bandera">ps.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">PT</column>
+            <column name="descripcion">Portugal</column>
+            <column name="bandera">pt.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">PW</column>
+            <column name="descripcion">Palau</column>
+            <column name="bandera">pw.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">PY</column>
+            <column name="descripcion">Paraguay</column>
+            <column name="bandera">py.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">QA</column>
+            <column name="descripcion">Qatar</column>
+            <column name="bandera">qa.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">RE</column>
+            <column name="descripcion">Reunion</column>
+            <column name="bandera">re.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">RO</column>
+            <column name="descripcion">Romania</column>
+            <column name="bandera">ro.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">RS</column>
+            <column name="descripcion">Serbia</column>
+            <column name="bandera">rs.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">RU</column>
+            <column name="descripcion">Russian Federation</column>
+            <column name="bandera">ru.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">RW</column>
+            <column name="descripcion">Rwanda</column>
+            <column name="bandera">rw.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">SA</column>
+            <column name="descripcion">Saudi Arabia</column>
+            <column name="bandera">sa.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">SB</column>
+            <column name="descripcion">Solomon Islands</column>
+            <column name="bandera">sb.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">SC</column>
+            <column name="descripcion">Seychelles</column>
+            <column name="bandera">sc.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">SD</column>
+            <column name="descripcion">Sudan</column>
+            <column name="bandera">sd.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">SE</column>
+            <column name="descripcion">Sweden</column>
+            <column name="bandera">se.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">SG</column>
+            <column name="descripcion">Singapore</column>
+            <column name="bandera">sg.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">SH</column>
+            <column name="descripcion">Saint Helena</column>
+            <column name="bandera">sh.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">SI</column>
+            <column name="descripcion">Slovenia</column>
+            <column name="bandera">si.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">SJ</column>
+            <column name="descripcion">Svalbard and Jan Mayen</column>
+            <column name="bandera">sj.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">SK</column>
+            <column name="descripcion">Slovakia</column>
+            <column name="bandera">sk.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">SL</column>
+            <column name="descripcion">Sierra Leone</column>
+            <column name="bandera">sl.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">SM</column>
+            <column name="descripcion">San Marino</column>
+            <column name="bandera">sm.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">SN</column>
+            <column name="descripcion">Senegal</column>
+            <column name="bandera">sn.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">SO</column>
+            <column name="descripcion">Somalia</column>
+            <column name="bandera">so.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">SR</column>
+            <column name="descripcion">Suriname</column>
+            <column name="bandera">sr.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">SS</column>
+            <column name="descripcion">South Sudan</column>
+            <column name="bandera">ss.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">ST</column>
+            <column name="descripcion">Sao Tome and Principe</column>
+            <column name="bandera">st.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">SV</column>
+            <column name="descripcion">El Salvador</column>
+            <column name="bandera">sv.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">SX</column>
+            <column name="descripcion">Sint Maarten (Dutch part)</column>
+            <column name="bandera">sx.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">SY</column>
+            <column name="descripcion">Syrian Arab Republic</column>
+            <column name="bandera">sy.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">SZ</column>
+            <column name="descripcion">Swaziland</column>
+            <column name="bandera">sz.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">TC</column>
+            <column name="descripcion">Turks and Caicos Islands</column>
+            <column name="bandera">tc.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">TD</column>
+            <column name="descripcion">Chad</column>
+            <column name="bandera">td.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">TF</column>
+            <column name="descripcion">French Southern Territories</column>
+            <column name="bandera">tf.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">TG</column>
+            <column name="descripcion">Togo</column>
+            <column name="bandera">tg.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">TH</column>
+            <column name="descripcion">Thailand</column>
+            <column name="bandera">th.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">TJ</column>
+            <column name="descripcion">Tajikistan</column>
+            <column name="bandera">tj.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">TK</column>
+            <column name="descripcion">Tokelau</column>
+            <column name="bandera">tk.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">TL</column>
+            <column name="descripcion">Timor-Leste</column>
+            <column name="bandera">tl.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">TM</column>
+            <column name="descripcion">Turkmenistan</column>
+            <column name="bandera">tm.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">TN</column>
+            <column name="descripcion">Tunisia</column>
+            <column name="bandera">tn.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">TO</column>
+            <column name="descripcion">Tonga</column>
+            <column name="bandera">to.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">TR</column>
+            <column name="descripcion">Turkey</column>
+            <column name="bandera">tr.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">TT</column>
+            <column name="descripcion">Trinidad and Tobago</column>
+            <column name="bandera">tt.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">TV</column>
+            <column name="descripcion">Tuvalu</column>
+            <column name="bandera">tv.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">TW</column>
+            <column name="descripcion">Taiwan</column>
+            <column name="bandera">tw.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">TZ</column>
+            <column name="descripcion">Tanzani</column>
+            <column name="bandera">tz.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">UA</column>
+            <column name="descripcion">Ukraine</column>
+            <column name="bandera">ua.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">UG</column>
+            <column name="descripcion">Uganda</column>
+            <column name="bandera">ug.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">UM</column>
+            <column name="descripcion">United States Minor Outlying Islands</column>
+            <column name="bandera">um.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">US</column>
+            <column name="descripcion">United States</column>
+            <column name="bandera">us.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">UY</column>
+            <column name="descripcion">Uruguay</column>
+            <column name="bandera">uy.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">UZ</column>
+            <column name="descripcion">Uzbekistan</column>
+            <column name="bandera">uz.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">VA</column>
+            <column name="descripcion">Holy See (Vatican City State)</column>
+            <column name="bandera">va.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">VC</column>
+            <column name="descripcion">Saint Vincent and the Grenadines</column>
+            <column name="bandera">vc.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">VE</column>
+            <column name="descripcion">Venezuela</column>
+            <column name="bandera">ve.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">VG</column>
+            <column name="descripcion">Virgin Island</column>
+            <column name="bandera">vg.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">VI</column>
+            <column name="descripcion">Virgin Island</column>
+            <column name="bandera">vi.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">VN</column>
+            <column name="descripcion">Vietnam</column>
+            <column name="bandera">vn.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">VU</column>
+            <column name="descripcion">Vanuatu</column>
+            <column name="bandera">vu.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">WF</column>
+            <column name="descripcion">Wallis and Futuna</column>
+            <column name="bandera">wf.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">WS</column>
+            <column name="descripcion">Samoa</column>
+            <column name="bandera">ws.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">YE</column>
+            <column name="descripcion">Yemen</column>
+            <column name="bandera">ye.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">YT</column>
+            <column name="descripcion">Mayotte</column>
+            <column name="bandera">yt.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">ZA</column>
+            <column name="descripcion">South Africa</column>
+            <column name="bandera">za.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">ZM</column>
+            <column name="descripcion">Zambia</column>
+            <column name="bandera">zm.png</column>
+        </table>
+        <table name="nacionalidad">
+            <column name="cve_nacionalidad">ZW</column>
+            <column name="descripcion">Zimbabwe</column>
+            <column name="bandera">zw.png</column>
+        </table>
+        <!-- Tabla rol -->
+        <table name="rol">
+            <column name="cve_rol">A</column>
+            <column name="rol">Administrador</column>
+        </table>
+        <table name="rol">
+            <column name="cve_rol">J</column>
+            <column name="rol">Juez</column>
+        </table>
+        <!-- Tabla usuario -->
+        <table name="usuario">
+            <column name="nombre_usuario">Jose</column>
+            <column name="pass">81dc9bdb52d04dc20036dbd8313ed055</column>
+            <column name="nombre_real">JosÃ©</column>
+            <column name="estado">0</column>
+            <column name="cve_rol">A</column>
+        </table>
+        <table name="usuario">
+            <column name="nombre_usuario">Juez1</column>
+            <column name="pass">81dc9bdb52d04dc20036dbd8313ed055</column>
+            <column name="nombre_real">Es el juez nÃºmero 1</column>
+            <column name="estado">0</column>
+            <column name="cve_rol">NULL</column>
+        </table>
+        <table name="usuario">
+            <column name="nombre_usuario">Juez2</column>
+            <column name="pass">81dc9bdb52d04dc20036dbd8313ed055</column>
+            <column name="nombre_real">Es un juez</column>
+            <column name="estado">0</column>
+            <column name="cve_rol">J</column>
+        </table>
+        <table name="usuario">
+            <column name="nombre_usuario">Juez3</column>
+            <column name="pass">81dc9bdb52d04dc20036dbd8313ed055</column>
+            <column name="nombre_real">Esto es un juez</column>
+            <column name="estado">0</column>
+            <column name="cve_rol">J</column>
+        </table>
+        <table name="usuario">
+            <column name="nombre_usuario">Prueba</column>
+            <column name="pass">81dc9bdb52d04dc20036dbd8313ed055</column>
+            <column name="nombre_real">Esto es una prueba</column>
+            <column name="estado">0</column>
+            <column name="cve_rol">NULL</column>
+        </table>
+    </database>
+</pma_xml_export>

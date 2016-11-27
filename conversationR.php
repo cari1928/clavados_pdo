@@ -22,6 +22,14 @@
     fwrite($file, "cve_nacionalidad=>".$result[0]['cve_nacionalidad'].";");
     fwrite($file, "dificultad=>".$result[0]['dificultad'] );
     fclose($file);
+  
+  } else {
+    $result[0]['num_ronda'] = "Falta por asignar";
+    $result[0]['calif_ronda'] = "0";
+    $result[0]['nombre_completo'] = "Falta por asignar";
+    $result[0]['bandera'] = "a1.png";
+    $result[0]['cve_nacionalidad'] = "Falta por asignar";
+    $result[0]['dificultad'] = "Falta por asignar";
   }
 
   echo '<!DOCTYPE html>
