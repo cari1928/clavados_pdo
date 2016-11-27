@@ -1,122 +1,137 @@
 <?php
-  include('../cl_web.class.php');
+include '../cl_web.class.php';
 
-  $web = new Clavadistas;
-  $web->conexion();
-  $web->checarAcceso(); //para evitar acceso a clavadistas no logueados
+$web = new Clavadistas;
+$web->conexion();
+$web->checarAcceso(); //para evitar acceso a clavadistas no logueados
 
-  $templates = $web->templateEngine();
+$templates = $web->templateEngine();
 
-  if(isset($_GET['action'])) {
+if (isset($_GET['action'])) {
 
     switch ($_GET['action']) {
-      case 'insert':
-          $web->setTabla("clavadista");
-          $web->insert($_POST);
-          header('Location: clavadistas.php');
-        break;
+        case 'insert':
+            $web->setTabla("clavadista");
+            $web->insert($_POST);
+            header('Location: clavadistas.php');
+            break;
 
-      case 'form_update':
-          $templates->setTemplateDir('../templates/admin/');
-          $clavadista = $web->getUsuario($_GET['cve_clavadista']);
+        case 'form_update':
+            $templates->setTemplateDir('../templates/admin/');
+            $clavadista = $web->getClavadista($_GET['cve_clavadista']);
 
-          die(var_dump($clavadista));
+            // die(var_dump($clavadista));
 
-          $combo_rol = $web->showList("select * from rol", $clavadista[0]['cve_rol']);
-          $templates->assign('clavadista', $clavadista[0]);
-          $templates->assign('combo_rol', $combo_rol);
-          messages($templates);
-          die();
-        break;
+            $cmb_nacionalidad = $web->showList("select cve_nacionalidad, descripcion from nacionalidad order by cve_nacionalidad", $clavadista[0]['cve_nacionalidad']);
+            $cmb_genero       = $web->showList("select cve_genero, genero from genero order by cve_genero", $clavadista[0]['cve_genero']);
 
-      case 'delete':
-          $web->deleteUser($_GET['nombre_clavadista']);
-          header('Location: clavadistas.php');
-        break;
+            $templates->assign('clavadista', $clavadista[0]);
+            $templates->assign('cmb_nacionalidad', $cmb_nacionalidad);
+            $templates->assign('cmb_genero', $cmb_genero);
+            messages($templates, "form_clavadistas.html");
+            die();
+            break;
 
-      case 'form_insert':
-          $templates->setTemplateDir('../templates/admin/');
-          $cmb_nacionalidad = $web->showList("select cve_nacionalidad, descripcion from nacionalidad");
-          $cmb_genero = $web->showList('select * from genero');
-          $cmb_tipo_clavado = $web->showList('select * from tipo_clavado');
+        case 'delete':
+            $web->deleteClavadista($_GET['cve_clavadista']);
+            header('Location: clavadistas.php');
+            break;
 
+        case 'form_insert':
+            $templates->setTemplateDir('../templates/admin/');
 
-          $web->assignTemplate('cmb_nacionalidad', $cmb_nacionalidad);
-          die(var_dump($cmb_tipo_clavado));
-          $web->assignTemplate('cmb_genero', $cmb_genero);
-          $web->assignTemplate('cmb_tipo_clavado', $cmb_tipo_clavado);
-          messages($templates, 'form_insert.html');
-          die();
-        break;
+            $cmb_nacionalidad = $web->showList("select cve_nacionalidad, descripcion from nacionalidad order by cve_nacionalidad");
+            $cmb_genero       = $web->showList("select cve_genero, genero from genero order by cve_genero");
 
-      case 'update':
-          if(empty($_POST['pass'])){
-            unset($_POST['pass']); //destruye campo de POST
-          } else{
-            $_POST['pass'] = md5($_POST['pass']); //encriptcaión de la nueva contraseña
-          }
+            $templates->assign('cmb_nacionalidad', $cmb_nacionalidad);
+            $templates->assign('cmb_genero', $cmb_genero);
+            messages($templates, 'form_clavadistas.html');
+            die();
+            break;
 
-          $web->setTabla('clavadista');
-          $web->update($_POST, $_POST['nombre_clavadista'],array('nombre_clavadista'=>$_POST['nombre_clavadista']));
-          header('Location: clavadistas.php');
-        break;
+        case 'update':
+            $web->setTabla('clavadista');
+            $web->update($_POST, null, array(
+                'cve_clavadista' => $_POST['cve_clavadista'],
+            ));
+            header('Location: clavadistas.php');
+            break;
     }
-  }
+}
 
-  $rows = $web->fetchAll("
+$rows = $web->fetchAll("
     select cve_clavadista 'Clave', nombre_completo 'Nombre', genero 'Genero', descripcion 'Nacionalidad', bandera 'Bandera'
       from clavadista inner join genero on clavadista.cve_genero = genero.cve_genero
                       inner join nacionalidad on clavadista.cve_nacionalidad = nacionalidad.cve_nacionalidad
     ");
 
-  if(count($rows) == 0){ //si la consulta no arrojó algo $web->setTemplate();
-    $web->showTemplate(getElements(),
-      array('type'=>'danger', 'msg'=>'No existen clavadistas'));
+if (count($rows) == 0) {
+    //si la consulta no arrojó algo $web->setTemplate();
+    $web->showTemplate(getElements(), array(
+        'type' => 'danger',
+        'msg'  => 'No existen clavadistas',
+    ));
     die();
-  }
+}
 
-  $columns = $web->getNombresColumnas($rows[0]);
+$columns = $web->getNombresColumnas($rows[0]);
 
-  $web->setTemplate(); //prepara smarty
-  $web->showTemplate(getElements(), null, array('rows'=>$rows, 'columns'=>$columns));
+$web->setTemplate(); //prepara smarty
+$web->showTemplate(getElements(), null, array(
+    'rows'    => $rows,
+    'columns' => $columns,
+));
 
-/****************************************************************************
-  FUNCTIONS
-/****************************************************************************
-  METHOD TO GET AN INDEXED ARRAY WITH THE SPECIFIC* INFORMATION OF A TEMPLATE
-****************************************************************************/
-  function getElements($title="Administrador", $headerTitle1="SISCACLAO",
-    $headerTitle2="Gestión de Clavadistas", $template="clavadista.html") {
-      return array('title'=>$title,'headerTitle1'=>$headerTitle1,
-            'headerTitle2'=>$headerTitle2, 'nombre_usuario'=>$_SESSION['nombre_usuario'],
-            'template'=>$template);
-  }
+/**
+ * Obtiene un arreglo indexado con información específica de un template
+ * @param  string $title        Título de la pestaña de la página
+ * @param  string $headerTitle1 Título Grande del Header
+ * @param  string $headerTitle2 Título Pequeño del Header
+ * @param  string $template     Archivo HTML a mostrar con display
+ * @return array                Contiene los parámetros ordenados en el arreglo
+ */
+function getElements($title = "Administrador", $headerTitle1 = "SISCACLAO",
+    $headerTitle2 = "Gestión de Clavadistas", $template = "clavadista.html") {
+    return array('title' => $title, 'headerTitle1'          => $headerTitle1,
+        'headerTitle2'       => $headerTitle2, 'nombre_usuario' => $_SESSION['nombre_usuario'],
+        'template'           => $template);
+}
 
-/****************************************************************************
-  METHOD TO DROP A SPECIFIC COLUMN OF AN ARRAY
-  @returns Array New Array without the specifiated* column
-****************************************************************************/
-  function deleteColumn($array, $column){
-    for ($i=0; $i < count($array); $i++) {
-      unset($array[$i][$column]);
+/**
+ * Elimina una columna específica de un arreglo
+ * @param  Array $array  Arreglo al cual se eliminará un campo
+ * @param  String $column Columna a eliminar del arreglo
+ * @return Array         Arreglo sin el elemento eliminado
+ */
+function deleteColumn($array, $column)
+{
+    for ($i = 0; $i < count($array); $i++) {
+        unset($array[$i][$column]);
     }
     return $array;
-  }
-//----------------------------------------------------------------------------------
-	function messages($templates, $template, $msg="", $type=null){
+}
 
-		if($type == "warning"){
-			$msg = '<div class="alert alert-danger" role="alert">'.$msg.'</div>';
-		}
-		else if($type == "info"){
-			$msg = '<div class="alert alert-success" role="alert">'.$msg.'</div>';
-		}
+/**
+ * Gestiona el contenido y muestreo de mensajes al usuario
+ * @param  String $templates Objeto de tipo template para poder usar los metos asign y display
+ * @param  String $template  Nombre del archivo html que se mostrará con display
+ * @param  string $msg       Contenido del mensaje
+ * @param  String $type      Clase bootstrap para diseñar el mensaje
+ * @return void
+ */
+function messages($templates, $template, $msg = "", $type = null)
+{
 
-		$templates->assign('title', 'Administrador');
-	  $templates->assign('headerTitle1', 'SISCACLAO');
-	  $templates->assign('headerTitle2', 'Sistema de Registro de Clavadistas');
+    if ($type == "warning") {
+        $msg = '<div class="alert alert-danger" role="alert">' . $msg . '</div>';
+    } else if ($type == "info") {
+        $msg = '<div class="alert alert-success" role="alert">' . $msg . '</div>';
+    }
+
+    $templates->assign('title', 'Administrador');
+    $templates->assign('headerTitle1', 'SISCACLAO');
+    $templates->assign('headerTitle2', 'Sistema de Registro de Clavadistas');
     $templates->assign('nombre_usuario', $_SESSION['nombre_usuario']);
-		$templates->assign('msg', $msg);
-		$templates->display($template);
-	}
-?>
+    $templates->assign('msg', $msg);
+    $templates->display($template);
+}
