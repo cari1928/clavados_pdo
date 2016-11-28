@@ -10,40 +10,49 @@
                     <h3 class="panel-title"> {$clavadista.nombre_completo} </h3>
                 </div>
                 <div class="panel-body">
-                    <table class="table table-default table-hover">
-                        <tr>
-                            <td> <label> Ronda </label> </td>
-                            <td> <label> Clavado </label> </td>
-                            <!-- <td> <label> Dificultad </label> </td> -->
-                            <td> <label> Opciones </label> </td>
-                        </tr>
-                        <form action="clavadistas.php?action=insert_orden" method="post">
-                        {for $cont=1 to $numero_rondas}
-                                <tr>
-                                    <td> <div class="form-group">
-                                            <input class="form-control" name="numero_ronda{$cont}" required readonly value="{$cont}" size="1">
-                                    </div> </td>
-                                    <td> <div class="form-group">
-                                            {$cmb_clavados}
-                                    </div> </td>
-                                    <!-- <td> <div class="form-group">
-                                            <input class="form-control" id="idInput{$cont}" readonly size="1">
-                                    </div> </td> -->
-                                    <td> <div class="form-group">
-                                        <button type="submit" class="btn btn-primary"> Guardar </button>
-                                    </div> </td>
-                                </tr>
-                        {/for}
-                        </form>
-                        <tr>
-                            <td> <label> Dificultad </label> </td>
-                            <td>
+                    <form action="clavadistas.php?action=insert_orden" method="post">
+                        <table class="table table-default table-hover">
+                            <tr>
+                                <td> <label> Ronda </label> </td>
+                                <td> <label> Clavado </label> </td>
+                            </tr>
+                                {for $cont=1 to $numero_rondas}
+                                    <tr>
+                                        <td> <div class="form-group">
+                                                <input class="form-control" name="numero_ronda{$cont}" required readonly value="{$cont}" size="1">
+                                        </div> </td>
+                                        <td> <div class="form-group">
+                                            <select class="form-control" name="{$nombDatos}{$cont}" 
+                                                onchange="difficultyValue(this);">
+                                                  {foreach $datos as $dato}
+                                                    <option value="{$dato[0]}"> {$dato[1]}</option>
+                                                  {/foreach}
+                                            </select>
+                                        </div> </td>                                    
+                                    </tr>
+                                {/for}
+                            <tr> 
                                 <div class="form-group">
-                                    <input class="form-control" id="idInput" readonly size="1">
+                                    <td> <label> Orden </label> </td>
+                                    <td>
+                                        <input class="form-control" name="orden" required size="2">
+                                    </td>
+                            </div> </td> </tr>
+                            <tr>
+                                <td> <label> Dificultad </label> </td>
+                                <td>
+                                    <div class="form-group">
+                                        <input class="form-control" id="idInput" readonly size="1">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr> <td colspan="2" align="right"> 
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary"> Guardar </button>
                                 </div>
-                            </td>
-                        </tr>
-                    </table>
+                            </td> </tr>
+                        </table>
+                    </form>
                 </div>
             </div>
         </nav>

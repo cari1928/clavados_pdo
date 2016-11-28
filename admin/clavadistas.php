@@ -67,13 +67,17 @@ if (isset($_GET['action'])) {
                 $numero_rondas = 6;
             }
 
-            $cmb_clavados = $web->showList("select cve_clavado, clavado from clavado order by cve_clavado", null, "", "difficultyValue(this);");
+            // $cmb_clavados = $web->showList("select cve_clavado, clavado from clavado order by cve_clavado", null, "", "difficultyValue(this);");
 
             //arreglo con dificultades
             $dificultades = $web->getClavados("select clavado, dificultad from clavado");
 
+            $sql   = "select cve_clavado, clavado from clavado order by cve_clavado";
+            $datos = $web->getAll($sql);
+
             $templates->assign('clavadista', $clavadista[0]);
-            $templates->assign('cmb_clavados', $cmb_clavados);
+            $templates->assign('datos', $datos);
+            $templates->assign('nombDatos', 'cve_clavado');
             $templates->assign('dificultades', $dificultades);
             $templates->assign('numero_rondas', $numero_rondas);
             messages($templates, 'form_orden.html');
