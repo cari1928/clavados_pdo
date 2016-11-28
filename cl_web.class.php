@@ -73,12 +73,13 @@ class CLweb
     @param   int $selected ELEMNT TO SELECT
      ****************************************************************************/
     //2016-10-04, regresa un arreglo asociativo, es para hacer combo
-    public function showList($query, $selected = null, $route = "")
+    public function showList($query, $selected = null, $route = "", $function = null)
     {
         $datos     = $this->getAll($query);
         $nombDatos = array_keys($datos[0]);
         $template  = $this->templateEngine();
         $template->assign('selected', $selected); //2016-10-06
+        $template->assign('function', $function);
         $template->assign('datos', $datos);
         $template->assign('nombDatos', $nombDatos);
         //fecth: procesa la plantilla, el resultado lo guarda en una variable

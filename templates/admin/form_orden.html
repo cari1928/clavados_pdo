@@ -1,0 +1,57 @@
+{include file="header.html"}
+<div class="container-fluid">
+    <div class="main row">
+        <nav class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-md-push-3">
+            {if isset({$msg})}
+            <div class="form-group"> {$msg} </div>
+            {/if}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"> {$clavadista.nombre_completo} </h3>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-default table-hover">
+                        <tr>
+                            <td> <label> Ronda </label> </td>
+                            <td> <label> Clavado </label> </td>
+                            <!-- <td> <label> Dificultad </label> </td> -->
+                            <td> <label> Opciones </label> </td>
+                        </tr>
+                        {for $cont=1 to $numero_rondas}
+                            <form action="clavadistas.php?action=insert_orden" method="post">
+                                <tr>
+                                    <td> <div class="form-group">
+                                            <input class="form-control" name="numero_ronda" required readonly value="{$cont}" size="1">
+                                    </div> </td>
+                                    <td> <div class="form-group">
+                                            {$cmb_clavados}
+                                    </div> </td>
+<!--                                     <td> <div class="form-group">
+                                            <input class="form-control" id="idInput" readonly size="1">
+                                    </div> </td> -->
+                                    <td> <div class="form-group">
+                                        <button type="submit" class="btn btn-primary"> Guardar </button>
+                                    </div> </td>
+                                </tr>
+                            </form>
+                        {/for}
+                        <tr>
+                            <td> <label> Dificultad </label> </td>
+                            <td>
+                                <div class="form-group">
+                                    <input class="form-control" id="idInput" readonly size="1">
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </nav>
+    </div>
+</div>
+<script type="text/javascript">
+    function difficultyValue(inputSelect) {
+        document.getElementById("idInput").value = inputSelect.options[inputSelect.selectedIndex].text;
+    }
+</script>
+{include file="footer.html"}

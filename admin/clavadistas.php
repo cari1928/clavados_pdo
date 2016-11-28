@@ -56,6 +56,34 @@ if (isset($_GET['action'])) {
             ));
             header('Location: clavadistas.php');
             break;
+
+        case 'orden':
+            $templates->setTemplateDir('../templates/admin/');
+            $clavadista = $web->getClavadista($_GET['cve_clavadista']);
+
+            if ($clavadista[0]['cve_genero'] == 'F') {
+                $numero_rondas = 5;
+            } else {
+                $numero_rondas = 6;
+            }
+
+            $cmb_clavados = $web->showList("select cve_clavado, clavado from clavado order by cve_clavado", null, "", "difficultyValue(this);");
+
+            $templates->assign('clavadista', $clavadista[0]);
+            $templates->assign('cmb_clavados', $cmb_clavados);
+            $templates->assign('numero_rondas', $numero_rondas);
+            messages($templates, 'form_orden.html');
+            die();
+            break;
+
+        case 'insert_orden':
+            echo "<pre>";
+            die(print_r($_POST));
+
+            $web->setTabla("orden_clavados");
+            $web->insert($_POST);
+            header('Location: clavadistas.php');
+            break;
     }
 }
 
