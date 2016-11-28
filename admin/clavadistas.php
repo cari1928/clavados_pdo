@@ -69,8 +69,12 @@ if (isset($_GET['action'])) {
 
             $cmb_clavados = $web->showList("select cve_clavado, clavado from clavado order by cve_clavado", null, "", "difficultyValue(this);");
 
+            //arreglo con dificultades
+            $dificultades = $web->getClavados("select clavado, dificultad from clavado");
+
             $templates->assign('clavadista', $clavadista[0]);
             $templates->assign('cmb_clavados', $cmb_clavados);
+            $templates->assign('dificultades', $dificultades);
             $templates->assign('numero_rondas', $numero_rondas);
             messages($templates, 'form_orden.html');
             die();

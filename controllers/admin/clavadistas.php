@@ -96,4 +96,18 @@ METHOD TO SET A CUSTOM TEMPLATE
         return $clavadista;
     }
 
+    /**
+     * [getClavados description]
+     * @return [type] [description]
+     */
+    public function getClavados($sql)
+    {
+        $clavadista = array();
+        $statement  = $this->conn->Prepare($sql);
+        $statement->Execute();
+        $clavadista = $statement->FetchAll(PDO::FETCH_ASSOC);
+
+        return $clavadista;
+    }
+
 }

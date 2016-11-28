@@ -17,24 +17,24 @@
                             <!-- <td> <label> Dificultad </label> </td> -->
                             <td> <label> Opciones </label> </td>
                         </tr>
+                        <form action="clavadistas.php?action=insert_orden" method="post">
                         {for $cont=1 to $numero_rondas}
-                            <form action="clavadistas.php?action=insert_orden" method="post">
                                 <tr>
                                     <td> <div class="form-group">
-                                            <input class="form-control" name="numero_ronda" required readonly value="{$cont}" size="1">
+                                            <input class="form-control" name="numero_ronda{$cont}" required readonly value="{$cont}" size="1">
                                     </div> </td>
                                     <td> <div class="form-group">
                                             {$cmb_clavados}
                                     </div> </td>
-<!--                                     <td> <div class="form-group">
-                                            <input class="form-control" id="idInput" readonly size="1">
+                                    <!-- <td> <div class="form-group">
+                                            <input class="form-control" id="idInput{$cont}" readonly size="1">
                                     </div> </td> -->
                                     <td> <div class="form-group">
                                         <button type="submit" class="btn btn-primary"> Guardar </button>
                                     </div> </td>
                                 </tr>
-                            </form>
                         {/for}
+                        </form>
                         <tr>
                             <td> <label> Dificultad </label> </td>
                             <td>
@@ -51,7 +51,18 @@
 </div>
 <script type="text/javascript">
     function difficultyValue(inputSelect) {
-        document.getElementById("idInput").value = inputSelect.options[inputSelect.selectedIndex].text;
+
+        {if isset($dificultades)}
+            {foreach $dificultades as $d}
+                var nose = "{$d.clavado}"; 
+                var n = nose.localeCompare(inputSelect.options[inputSelect.selectedIndex].text);   
+                if(n == 0) {
+                    document.getElementById("idInput").value = "{$d.dificultad}";
+
+                }            
+            {/foreach}
+        {/if}
+
     }
 </script>
 {include file="footer.html"}
