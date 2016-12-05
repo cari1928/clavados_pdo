@@ -25,8 +25,12 @@
 						data: frm
 					}).done(function (info) {
 						console.log(info);
-            $("#calificacion").attr('disabled', 'disabled');
-            $("#calificacion").prop('disabled', true);
+
+            var n = info.localeCompare("Calificación registrada");
+            if(n == 0) {
+              $("#calificacion").attr('disabled', 'disabled');
+              $("#calificacion").prop('disabled', true);
+            }
 					});
 				});
 			}

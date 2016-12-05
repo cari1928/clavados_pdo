@@ -163,7 +163,7 @@ class CLweb
     public function update2($array)
     {
         $sql = "UPDATE ronda SET calif_ronda=" . $array['calif_ronda'] . " WHERE num_ronda=" . $array['num_ronda'] . " and cve_clavadista='" . $array['cve_clavadista'] . "'";
-        echo $sql;
+        // echo $sql;
         $stmt  = $this->conn->query($sql);
         $OK    = $stmt->execute();
         $error = $stmt->errorInfo();
@@ -171,7 +171,7 @@ class CLweb
         if (!$OK) {
             echo $error[2];
         } else {
-            echo "Todo bien";
+            // echo "Todo bien";
         }
     }
 

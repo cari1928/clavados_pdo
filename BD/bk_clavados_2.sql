@@ -59,6 +59,7 @@ CREATE TABLE `clavadista` (
   `nombre_completo` varchar(40) DEFAULT NULL,
   `cve_genero` varchar(1) DEFAULT NULL,
   `cve_nacionalidad` varchar(4) DEFAULT NULL,
+  `calif_final` float DEFAULT NULL,
   PRIMARY KEY (`cve_clavadista`),
   KEY `clavadistafk1` (`cve_genero`),
   KEY `clavadistafk2` (`cve_nacionalidad`),
@@ -73,7 +74,7 @@ CREATE TABLE `clavadista` (
 
 LOCK TABLES `clavadista` WRITE;
 /*!40000 ALTER TABLE `clavadista` DISABLE KEYS */;
-INSERT INTO `clavadista` VALUES ('A000001','Juan PÃ©rez','M','A1'),('A000002','Shaine Z. Gonzales','M','A2'),('A000003','Olivia P. Torres','F','AD'),('A000004','Yetta O. Hensley','F','AD'),('A000005','Solomon N. Steele','F','AE'),('A000006','Solomon N. Steele','F','AE'),('A000007','Imani S. Goodwin','M','AF'),('A000008','Mariana Luna Bellman','F','AI'),('A000010','Sheldon','M','AZ');
+INSERT INTO `clavadista` VALUES ('A000001','Juan PÃ©rez','M','A1',NULL),('A000002','Shaine Z. Gonzales','M','A2',NULL),('A000003','Olivia P. Torres','F','AD',NULL),('A000004','Yetta O. Hensley','F','AD',NULL),('A000005','Solomon N. Steele','F','AE',NULL),('A000007','Imani S. Goodwin','M','AF',3.91667),('A000008','Mariana Luna Bellman','F','AR',NULL),('A000010','Sheldon','M','AZ',NULL),('C000011','MarÃ­a Josefina','F','BR',2.25),('C000012','JerÃ³nimo Acuario','M','FM',NULL);
 /*!40000 ALTER TABLE `clavadista` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -98,7 +99,7 @@ CREATE TABLE `clavado` (
 
 LOCK TABLES `clavado` WRITE;
 /*!40000 ALTER TABLE `clavado` DISABLE KEYS */;
-INSERT INTO `clavado` VALUES ('C000001',1.3,'Clavado 1'),('C000002',2,'Clavado 2'),('C000003',4,'Clavado 3'),('C000004',5,'Clavado 4'),('C000005',1,'Clavado 5');
+INSERT INTO `clavado` VALUES ('C000001',2.5,'C1'),('C000002',1.6,'C2');
 /*!40000 ALTER TABLE `clavado` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -121,7 +122,7 @@ CREATE TABLE `enviardatos` (
   CONSTRAINT `convFK` FOREIGN KEY (`nombre_usuario`) REFERENCES `usuario` (`nombre_usuario`),
   CONSTRAINT `convFK2` FOREIGN KEY (`cve_clavadista`) REFERENCES `clavadista` (`cve_clavadista`),
   CONSTRAINT `convFK3` FOREIGN KEY (`cve_clavado`) REFERENCES `clavado` (`cve_clavado`)
-) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -130,7 +131,7 @@ CREATE TABLE `enviardatos` (
 
 LOCK TABLES `enviardatos` WRITE;
 /*!40000 ALTER TABLE `enviardatos` DISABLE KEYS */;
-INSERT INTO `enviardatos` VALUES (35,'Jose','A000001','C000001'),(36,'Jose','A000001','C000001');
+INSERT INTO `enviardatos` VALUES (8,'Jose','C000012','C000001');
 /*!40000 ALTER TABLE `enviardatos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -142,13 +143,12 @@ DROP TABLE IF EXISTS `enviardatosjuez`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `enviardatosjuez` (
-  `idConversation` int(11) NOT NULL AUTO_INCREMENT,
   `nombre_usuario` varchar(255) NOT NULL,
   `cve_clavadista` varchar(7) NOT NULL,
   `cve_clavado` varchar(7) NOT NULL,
   `calificacion` float NOT NULL,
-  PRIMARY KEY (`idConversation`,`nombre_usuario`,`cve_clavadista`,`cve_clavado`)
-) ENGINE=InnoDB AUTO_INCREMENT=108 DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`nombre_usuario`,`cve_clavadista`,`cve_clavado`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -157,7 +157,6 @@ CREATE TABLE `enviardatosjuez` (
 
 LOCK TABLES `enviardatosjuez` WRITE;
 /*!40000 ALTER TABLE `enviardatosjuez` DISABLE KEYS */;
-INSERT INTO `enviardatosjuez` VALUES (96,'Juez7','A000001','C000001',7),(97,'Juez1','A000009','C000005',10),(99,'Juez6','A000001','C000001',2.5),(100,'Juez4','A000001','C000001',7),(101,'Juez3','A000001','C000001',10),(104,'Juez5','A000001','C000001',10),(106,'Juez6','A000001','C000001',99),(107,'juez1','A000001','C000001',-2);
 /*!40000 ALTER TABLE `enviardatosjuez` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -211,6 +210,36 @@ INSERT INTO `nacionalidad` VALUES ('A1','Anonymous Proxy','a1.png'),('A2','Satel
 UNLOCK TABLES;
 
 --
+-- Table structure for table `orden_clavados`
+--
+
+DROP TABLE IF EXISTS `orden_clavados`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `orden_clavados` (
+  `orden` int(11) NOT NULL,
+  `numero_ronda` int(11) NOT NULL DEFAULT '0',
+  `cve_clavadista` varchar(7) DEFAULT NULL,
+  `cve_clavado` varchar(7) DEFAULT NULL,
+  `calif_ronda` float DEFAULT NULL,
+  PRIMARY KEY (`orden`,`numero_ronda`),
+  KEY `orden_clavadosfk` (`cve_clavadista`),
+  KEY `orden_clavadosfk2` (`cve_clavado`),
+  CONSTRAINT `orden_clavadosfk` FOREIGN KEY (`cve_clavadista`) REFERENCES `clavadista` (`cve_clavadista`),
+  CONSTRAINT `orden_clavadosfk2` FOREIGN KEY (`cve_clavado`) REFERENCES `clavado` (`cve_clavado`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `orden_clavados`
+--
+
+LOCK TABLES `orden_clavados` WRITE;
+/*!40000 ALTER TABLE `orden_clavados` DISABLE KEYS */;
+/*!40000 ALTER TABLE `orden_clavados` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `rol`
 --
 
@@ -257,7 +286,6 @@ CREATE TABLE `ronda` (
 
 LOCK TABLES `ronda` WRITE;
 /*!40000 ALTER TABLE `ronda` DISABLE KEYS */;
-INSERT INTO `ronda` VALUES (1,'A000001',27),(1,'A000002',3),(2,'A000001',NULL),(3,'A000001',NULL);
 /*!40000 ALTER TABLE `ronda` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -286,7 +314,7 @@ CREATE TABLE `usuario` (
 
 LOCK TABLES `usuario` WRITE;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` VALUES ('Cricri','81dc9bdb52d04dc20036dbd8313ed055','cricri cantor',0,'J'),('Jose','81dc9bdb52d04dc20036dbd8313ed055','JosÃ©',1,'A'),('juez1','81dc9bdb52d04dc20036dbd8313ed055','Juan Rubi Ramirez Garcia',0,'J'),('juez2','81dc9bdb52d04dc20036dbd8313ed055','Es un juez',0,'J'),('Juez3','81dc9bdb52d04dc20036dbd8313ed055','Esto es un juez',0,'J'),('Juez4','81dc9bdb52d04dc20036dbd8313ed055','Alejandra Ferrel',0,'J'),('Juez5','81dc9bdb52d04dc20036dbd8313ed055','Aldo Enrique Mendoza Pallares',0,'J'),('Juez6','81dc9bdb52d04dc20036dbd8313ed055','Miguel Anguel GutiÃ©rrez Ledesma',0,'J'),('juez7','81dc9bdb52d04dc20036dbd8313ed055','Carolina Santana',0,'A');
+INSERT INTO `usuario` VALUES ('Barondelsc','9c426349882d858347b4d810160dd15a','Julio treviÃ±o',NULL,NULL),('Cricri','81dc9bdb52d04dc20036dbd8313ed055','cricri cantor',0,'J'),('Jose','81dc9bdb52d04dc20036dbd8313ed055','JosÃ©',1,'A'),('Juez1','81dc9bdb52d04dc20036dbd8313ed055','Juan Rubi Ramirez Garcia',1,'J'),('Juez2','81dc9bdb52d04dc20036dbd8313ed055','Es un juez',1,'J'),('Juez3','81dc9bdb52d04dc20036dbd8313ed055','Esto es un juez',1,'J'),('Juez4','81dc9bdb52d04dc20036dbd8313ed055','Alejandra Ferrel',1,'J'),('Juez5','81dc9bdb52d04dc20036dbd8313ed055','Aldo Enrique Mendoza Pallares',1,'J'),('Juez6','81dc9bdb52d04dc20036dbd8313ed055','Miguel Anguel GutiÃ©rrez Ledesma',1,'J'),('Juez7','81dc9bdb52d04dc20036dbd8313ed055','Carolina Santana',1,'J'),('Juez8','81dc9bdb52d04dc20036dbd8313ed055','Tu madre maldito',1,'J'),('Rgg','81a2ef85594f2a712ca9762b37df11b1','Ricardo GG',NULL,NULL);
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -299,4 +327,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-11-27 21:43:19
+-- Dump completed on 2016-12-05 12:05:17

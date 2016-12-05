@@ -4,7 +4,8 @@ define('PATH', '/var/www/html/clavados_pdo/');
 
 // Archivo de configuración de Clavados
 // define('DB_IP', '192.168.1.69'); //se debe modificar cada que se acceda a internet
-define('DB_IP', '172.20.141.238'); //se debe modificar cada que se acceda a internet
+// define('DB_IP', '192.168.1.79'); //se debe modificar cada que se acceda a internet
+define('DB_IP', '172.20.118.35'); //se debe modificar cada que se acceda a internet
 define('DB_NAME', 'clavados_pdo');
 define('DB_USER', 'admincl');
 define('DB_PASS', '1234');

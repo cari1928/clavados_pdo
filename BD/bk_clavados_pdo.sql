@@ -102,13 +102,13 @@ INSERT INTO `clavado` VALUES ('aaa',2),('abd',1),('bbb',3),('BDD',3),('C000001',
 UNLOCK TABLES;
 
 --
--- Table structure for table `enviarDatos`
+-- Table structure for table `enviardatos`
 --
 
-DROP TABLE IF EXISTS `enviarDatos`;
+DROP TABLE IF EXISTS `enviardatos`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `enviarDatos` (
+CREATE TABLE `enviardatos` (
   `idConversation` int(11) NOT NULL AUTO_INCREMENT,
   `nombre_usuario` varchar(10) NOT NULL DEFAULT '',
   `cve_clavadista` varchar(7) NOT NULL DEFAULT '',
@@ -124,23 +124,23 @@ CREATE TABLE `enviarDatos` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `enviarDatos`
+-- Dumping data for table `enviardatos`
 --
 
-LOCK TABLES `enviarDatos` WRITE;
-/*!40000 ALTER TABLE `enviarDatos` DISABLE KEYS */;
-INSERT INTO `enviarDatos` VALUES (3,'Jose','A000001','abd'),(9,'Jose','A000002','RRT'),(4,'Jose','A000003','BDD'),(10,'Jose','A000003','ZZQ'),(11,'Jose','A000004','Sfa'),(5,'Jose','A000007','ttt'),(7,'Jose','A000007','qwe'),(6,'Jose','A000008','hhh'),(8,'Jose','A000009','EZE');
-/*!40000 ALTER TABLE `enviarDatos` ENABLE KEYS */;
+LOCK TABLES `enviardatos` WRITE;
+/*!40000 ALTER TABLE `enviardatos` DISABLE KEYS */;
+INSERT INTO `enviardatos` VALUES (3,'Jose','A000001','abd'),(9,'Jose','A000002','RRT'),(4,'Jose','A000003','BDD'),(10,'Jose','A000003','ZZQ'),(11,'Jose','A000004','Sfa'),(5,'Jose','A000007','ttt'),(7,'Jose','A000007','qwe'),(6,'Jose','A000008','hhh'),(8,'Jose','A000009','EZE');
+/*!40000 ALTER TABLE `enviardatos` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `enviarDatosJuez`
+-- Table structure for table `enviardatosjuez`
 --
 
-DROP TABLE IF EXISTS `enviarDatosJuez`;
+DROP TABLE IF EXISTS `enviardatosjuez`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `enviarDatosJuez` (
+CREATE TABLE `enviardatosjuez` (
   `idConversation` int(11) NOT NULL AUTO_INCREMENT,
   `nombre_usuario` varchar(255) NOT NULL,
   `cve_clavadista` varchar(7) NOT NULL,
@@ -151,13 +151,13 @@ CREATE TABLE `enviarDatosJuez` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `enviarDatosJuez`
+-- Dumping data for table `enviardatosjuez`
 --
 
-LOCK TABLES `enviarDatosJuez` WRITE;
-/*!40000 ALTER TABLE `enviarDatosJuez` DISABLE KEYS */;
-INSERT INTO `enviarDatosJuez` VALUES (3,'Juez2','A000004','Sfa',5),(4,'Juez3','A000004','Sfa',2);
-/*!40000 ALTER TABLE `enviarDatosJuez` ENABLE KEYS */;
+LOCK TABLES `enviardatosjuez` WRITE;
+/*!40000 ALTER TABLE `enviardatosjuez` DISABLE KEYS */;
+INSERT INTO `enviardatosjuez` VALUES (3,'Juez2','A000004','Sfa',5),(4,'Juez3','A000004','Sfa',2);
+/*!40000 ALTER TABLE `enviardatosjuez` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
