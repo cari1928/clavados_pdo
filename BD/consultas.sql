@@ -8,3 +8,5 @@ select distinct clavadista.cve_clavadista, calif_ronda from ronda right outer jo
 select * from ronda where cve_clavadista='C000011' order by num_ronda DESCArray ( ) 
 
 select * from ronda where cve_clavadista='C000012' order by num_ronda DESC
+
+select * from ronda inner join enviardatosjuez on enviardatosjuez.cve_clavadista = ronda.cve_clavadista inner join clavado on clavado.cve_clavado = enviardatosjuez.cve_clavado inner join clavadista on clavadista.cve_clavadista = ronda.cve_clavadista inner join nacionalidad on clavadista.cve_nacionalidad = nacionalidad.cve_nacionalidad order by num_ronda

@@ -10,7 +10,7 @@ $sql = "select * from ronda
     inner join clavado on clavado.cve_clavado = enviardatosjuez.cve_clavado
     inner join clavadista on clavadista.cve_clavadista = ronda.cve_clavadista
     inner join nacionalidad on clavadista.cve_nacionalidad = nacionalidad.cve_nacionalidad
-  order by num_ronda";
+  order by num_ronda DESC";
 $result = $web->fetchAll($sql);
 
 if (isset($result[0])) {
@@ -78,14 +78,15 @@ echo '<!DOCTYPE html>
       <nav class="navbar navbar-default navbar-static-top">
         <div class="container-fluid">
           <div class="navbar-header">
-            <button type="button" class="navbar-toogle collapse" data-toogle="collapse" data-target="#navbar-1">
-              <span class="sr-only"> Menu </span> <!-- Para que en cualquier dispositivo de lectura se muestre un menú -->
-              <span class="icon-bar"></span> <!-- Barritas del botón -->
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-            <a href="index.php" class="navbar-brand"><span class="glyphicon glyphicon-tint"></span></a>
-          </div>
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-1" aria-expanded="false">
+
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a href="index.php" class="navbar-brand"><span class="glyphicon glyphicon-tint"></span></a>
+        </div>
           <div class="collapse navbar-collapse" id="navbar-1">
             <ul class="nav navbar-nav">
               <li><a href="calificaciones.php">Calificaciones</a></li>

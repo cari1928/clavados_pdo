@@ -18,8 +18,6 @@ $sql = "select * from ronda
             order by num_ronda DESC";
 $result = $web->fetchAll($sql);
 
-var_dump($result);
-
 $msg = '';
 if (count($result) == 0) {
     //nm ronda = 1
@@ -39,13 +37,11 @@ if ($_POST['dificultad'] >= 1 && $_POST['dificultad'] <= 5) {
 
 }
 
-//die(var_dump($tmp));
 $web->setTabla('ronda');
 $web->insert($tmp); //checar qué elementos se pueden insertar aquí
 
 //Insertar y clavado
 $clavado = arrayClavado($_POST);
-//var_dump($clavado);
 $web->setTabla('clavado');
 $web->update($clavado, null, array('cve_clavado' => $_POST['cve_clavado']));
 
@@ -56,7 +52,10 @@ $web->setTabla('enviardatos');
 $web->insert($_POST);
 echo "Mensaje registrado";
 
-//------------------------------------------------------------------------------------------------
+/**
+ * Creación de un arreglo personalizado
+ * @return Array Arreglo ya personalizado
+ */
 function arrayClavadista()
 {
     $temp = array
@@ -65,7 +64,12 @@ function arrayClavadista()
     );
     return $temp;
 }
-//------------------------------------------------------------------------------------------------
+
+/**
+ * Creación de arreglo personalizado para clavados
+ * @param  Array $array Arreglo a personalizar
+ * @return Array Arreglo ya personalizado
+ */
 function arrayClavado($array)
 {
     $temp = array
