@@ -7,3 +7,4 @@ select distinct clavadista.cve_clavadista, calif_ronda from ronda right outer jo
 
 select * from ronda where cve_clavadista='C000011' order by num_ronda DESCArray ( ) 
 
+select * from ronda where cve_clavadista='C000012' order by num_ronda DESC

@@ -28,24 +28,22 @@ $sql = "select * from enviardatosjuez
   inner join clavado on clavado.cve_clavado = enviardatosjuez.cve_clavado";
 $result_2 = $web->fetchAll($sql);
 
-$prom = "0%";
+$prom = "0";
 if (count($result_2) == 7) {
     //todos los jueces han calificado
-    $sql  = "select cve_clavadista, calificacion from enviardatosjuez order by calificacion";
+    $sql = "select cve_clavadista, calificacion, clavado.dificultad from enviardatosjuez
+        inner join clavado on enviardatosjuez.cve_clavado = clavado.cve_clavado
+    order by calificacion";
     $temp = $web->fetchAll($sql); //se obtienen  las 7 calificaciones
 
     $caliRonda = 0;
     for ($i = 2; $i < count($temp) - 2; $i++) {
         $caliRonda += $temp[$i]['calificacion'];
     }
+    $caliRonda *= $temp[0]['dificultad'];
 
-    // print_r($temp);
-
-    $sql      = "select * from ronda where cve_clavadista='" . $temp[1]['cve_clavadista'] . "' order by num_ronda DESC";
+    $sql      = "select * from ronda where cve_clavadista='" . $temp[0]['cve_clavadista'] . "' order by num_ronda DESC";
     $resRonda = $web->fetchAll($sql);
-
-    // echo $sql;
-    // print_r($resRonda);
 
     $tmp = array(
         'num_ronda'      => $resRonda[0]['num_ronda'],
@@ -60,7 +58,8 @@ if (count($result_2) == 7) {
     $web->update2($tmp);
 
     $sql = "select calif_ronda, cve_genero from ronda
-              inner join clavadista on ronda.cve_clavadista = clavadista.cve_clavadista";
+  inner join clavadista on ronda.cve_clavadista = clavadista.cve_clavadista
+  where clavadista.cve_clavadista='" . $temp[0]['cve_clavadista'] . "'";
     $resRonda = $web->fetchAll($sql);
 
     $prom = 0;
@@ -68,16 +67,8 @@ if (count($result_2) == 7) {
         $prom += $resRonda[$i]['calif_ronda'];
     }
 
-    if ($resRonda[0]['cve_genero'] == 'F') {
-        $prom /= 5;
-    } else {
-        $prom /= 6;
-    }
-
     $web->setTabla('clavadista');
     $web->update(array('calif_final' => $prom, 'cve_clavadista' => $temp[0]['cve_clavadista']), null, array('cve_clavadista' => $temp[0]['cve_clavadista']));
-
-    $prom .= "%";
 
 } else {
     $caliRonda = "";

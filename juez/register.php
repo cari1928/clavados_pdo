@@ -4,6 +4,20 @@ include '../cl_web.class.php';
 $web->conexion();
 $web->checarAcceso();
 
+//calificacion, cve_clavadista, cve_clavado
+$file    = fopen("datos.txt", "r");
+$datos   = array();
+$element = multiexplode(array("=>", ";"), fgets($file));
+// var_dump($element);
+for ($i = 0; $i < count($element); $i += 2) {
+    $temp    = array($element[$i] => $element[$i + 1]);
+    $datos[] = $temp;
+}
+fclose($file);
+
+$_POST['cve_clavadista'] = $datos[0]['cve_clavadista'];
+$_POST['cve_clavado']    = $datos[4]['cve_clavado'];
+
 //Insertar y clavado
 $_POST['nombre_usuario'] = $_SESSION['nombre_usuario'];
 
@@ -33,4 +47,12 @@ if (count($datos) < 7) {
     } else {
         echo "No está dentro del rango";
     }
+}
+
+//------------------------------------------------------------------------------
+function multiexplode($delimiters, $string)
+{
+    $ready  = str_replace($delimiters, $delimiters[0], $string);
+    $launch = explode($delimiters[0], $ready);
+    return $launch;
 }
