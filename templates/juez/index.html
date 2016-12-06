@@ -10,6 +10,7 @@
   </div>
 </div>
 <script>
+
 			$(document).on("ready", function(){
         registerMessages();
 				setInterval("loadOldMessages()", 500)
@@ -28,8 +29,11 @@
 
             var n = info.localeCompare("Calificación registrada");
             if(n == 0) {
-              $("#calificacion").attr('disabled', 'disabled');
-              $("#calificacion").prop('disabled', true);
+              alert(info);
+            //   //disable
+            //   document.getElementById("div_calif").innerHTML="<input type='number' id='calificacion' class='form-control' name='calificacion' min='0' max='10' step='0.5' disabled>";
+            } else {
+              alert("Ya registró calificación");
             }
 					});
 				});
@@ -39,7 +43,17 @@
       	$.ajax({
       		type: "POST",
       		url: "conversation.php"
-      	}).done(function(info) {
+      	}).done(function(info) {         
+          // var res = info.substring(0, 1);
+          
+          // // alert(n);
+          // if(res == 0 && flag == 0) {
+          //   console.log(n);
+          //   // enable
+          //   document.getElementById("div_calif").innerHTML="<input type='number' id='calificacion' class='form-control' name='calificacion' min='0' max='10' step='0.5'>";
+          //   flag = 1;
+          // }
+
       		$("#conversation").html(info);
       	});
       }

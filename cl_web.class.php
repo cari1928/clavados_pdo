@@ -291,6 +291,7 @@ include 'controllers/registro.php';
 include 'controllers/admin/usuarios.php';
 include 'controllers/admin/clavadistas.php';
 include 'controllers/admin/clavados.php';
+include 'controllers/juez/calificacion.php';
 
 $web = new CLweb;
 $web->conexion();

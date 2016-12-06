@@ -22,6 +22,10 @@ if (isset($_POST['nueva_ronda'])) {
         $web->deleteAll('enviardatosjuez');
         $web->deleteAll('enviardatos');
 
+        //borrar datos de archivos
+        file_put_contents("datos.txt", "");
+        file_put_contents("datos2.txt", "");
+
         $msg = array('type' => 'info', 'msg' => 'Nueva ronda creada correctamente');
     }
 

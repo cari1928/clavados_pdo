@@ -13,6 +13,8 @@ $sql = "select * from enviardatos
     inner join clavado on clavado.cve_clavado = enviardatos.cve_clavado";
 $result = $web->fetchAll($sql);
 
+// print_r($result);
+
 if (isset($result[0])) {
     $file = fopen("datos.txt", "w");
     fwrite($file, "cve_clavadista=>" . $result[0]['cve_clavadista'] . ";");
@@ -21,6 +23,8 @@ if (isset($result[0])) {
     fwrite($file, "dificultad=>" . $result[0]['dificultad'] . ";");
     fwrite($file, "cve_clavado=>" . $result[0]['cve_clavado']);
     fclose($file);
+} else {
+    $file = fopen("datos.txt", "w");
 }
 
 //JUEZ-JUEZ
@@ -87,15 +91,17 @@ for ($i = 0; $i < count($result_2); $i++) {
 }
 fclose($file);
 
+$char = 1;
 if (!isset($result[0])) {
     $result[0]['cve_clavadista']   = "";
     $result[0]['cve_nacionalidad'] = "";
     $result[0]['bandera']          = "";
     $result[0]['nombre_completo']  = "";
     $result[0]['dificultad']       = "";
+    $char                          = 0;
 }
 
-echo '<section>
+echo $char . '<section>
     <div id="conversation" class="container-fluid">
       <div class="row">
 
